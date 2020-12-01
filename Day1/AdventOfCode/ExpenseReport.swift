@@ -35,7 +35,7 @@ public struct ExpenseReport {
         // Iterate over the remaining items and call this method recursively with one fewer items to find and a sum
         // decremented by the iterated value. When findCandidates(), returns non-nil, we have found a sequence that sums
         // to the desired sum.
-        for (idx, value) in items.suffix(from: startIndex).enumerated() {
+        for (idx, value) in items[startIndex...].enumerated() {
             if let candidates = findCandidates(from: idx + 1, sum: sum - value, itemCount: itemCount - 1) {
                 return candidates + [value]
             }
