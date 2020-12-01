@@ -8,9 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		9D0DF1BE2574396C007D498C /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D0DF1BD2574396C007D498C /* main.swift */; };
-		9D0DF21F25744217007D498C /* SolveExpenseReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D0DF21E25744217007D498C /* SolveExpenseReport.swift */; };
+		9D0DF21F25744217007D498C /* ExpenseReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D0DF21E25744217007D498C /* ExpenseReport.swift */; };
 		9D0DF2262574422D007D498C /* libAdventOfCode.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D0DF212257441E2007D498C /* libAdventOfCode.a */; };
-		9D0DF232257442CB007D498C /* SolveExpenseReportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D0DF231257442CB007D498C /* SolveExpenseReportTests.swift */; };
+		9D0DF232257442CB007D498C /* ExpenseReportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D0DF231257442CB007D498C /* ExpenseReportTests.swift */; };
 		9D0DF234257442CB007D498C /* libAdventOfCode.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D0DF212257441E2007D498C /* libAdventOfCode.a */; };
 /* End PBXBuildFile section */
 
@@ -56,9 +56,9 @@
 		9D0DF1BA2574396C007D498C /* aoc */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = aoc; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D0DF1BD2574396C007D498C /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		9D0DF212257441E2007D498C /* libAdventOfCode.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAdventOfCode.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		9D0DF21E25744217007D498C /* SolveExpenseReport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SolveExpenseReport.swift; sourceTree = "<group>"; };
+		9D0DF21E25744217007D498C /* ExpenseReport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpenseReport.swift; sourceTree = "<group>"; };
 		9D0DF22F257442CB007D498C /* AdventOfCodeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AdventOfCodeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		9D0DF231257442CB007D498C /* SolveExpenseReportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolveExpenseReportTests.swift; sourceTree = "<group>"; };
+		9D0DF231257442CB007D498C /* ExpenseReportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseReportTests.swift; sourceTree = "<group>"; };
 		9D0DF233257442CB007D498C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -128,7 +128,7 @@
 		9D0DF213257441E2007D498C /* AdventOfCode */ = {
 			isa = PBXGroup;
 			children = (
-				9D0DF21E25744217007D498C /* SolveExpenseReport.swift */,
+				9D0DF21E25744217007D498C /* ExpenseReport.swift */,
 			);
 			path = AdventOfCode;
 			sourceTree = "<group>";
@@ -136,7 +136,7 @@
 		9D0DF230257442CB007D498C /* AdventOfCodeTests */ = {
 			isa = PBXGroup;
 			children = (
-				9D0DF231257442CB007D498C /* SolveExpenseReportTests.swift */,
+				9D0DF231257442CB007D498C /* ExpenseReportTests.swift */,
 				9D0DF233257442CB007D498C /* Info.plist */,
 			);
 			path = AdventOfCodeTests;
@@ -321,7 +321,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9D0DF21F25744217007D498C /* SolveExpenseReport.swift in Sources */,
+				9D0DF21F25744217007D498C /* ExpenseReport.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -329,7 +329,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9D0DF232257442CB007D498C /* SolveExpenseReportTests.swift in Sources */,
+				9D0DF232257442CB007D498C /* ExpenseReportTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

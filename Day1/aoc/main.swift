@@ -22,7 +22,8 @@ let input = [
     1487, 1840, 1951, 1255, 1786, 1111, 1280, 1625, 1478, 1453
 ]
 
-if let solution = solveExpenseReport(input, target: 2020) {
+let report = ExpenseReport(items: input)
+if let solution = report.solve(sum: 2020, itemCount: 3) {
     print("\(solution)")
 } else {
     print("Solution not found!")
