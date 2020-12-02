@@ -7,81 +7,71 @@
 
 import Foundation
 
-public func checkPasswordsPart1(_ passwords: [String]) -> Int {
-    var validCount = 0
-    
-    for line in passwords {
-        let lineScanner = Scanner(string: line)
-        guard let minCount = lineScanner.scanInt(representation: .decimal) else {
-            continue // Invalid format
-        }
-        
-        guard lineScanner.scanString("-") != nil else {
-            continue // Invalid format
-        }
-        
-        guard let maxCount = lineScanner.scanInt(representation: .decimal) else {
-            continue // Invalid format
-        }
-        
-        guard let letter = lineScanner.scanCharacter() else {
-            continue // Invalid format
-        }
-        
-        guard lineScanner.scanString(":") != nil else {
-            continue // Invalid format
-        }
-
-        guard let password = lineScanner.scanCharacters(from: .alphanumerics) else {
-            continue // Invalid format
-        }
-        
-        let letterCount = password.reduce(0) { $0 + (($1 == letter) ? 1 : 0) }
-        if letterCount >= minCount && letterCount <= maxCount {
-            validCount += 1
+public func checkPasswords(_ passwords: [String], policy: ParsedPassword.ValidationPolicy) -> Int {
+    return passwords.reduce(0) { count, line in
+        if ParsedPassword(string: line)?.validate(policy: policy) == true {
+            return count + 1
+        } else {
+            return count
         }
     }
-    
-    return validCount
 }
 
-public func checkPasswordsPart2(_ passwords: [String]) -> Int {
-    var validCount = 0
+public struct ParsedPassword {
+    public let numbers: (Int, Int)
+    public let character: Character
+    public let password: String
     
-    for line in passwords {
-        let lineScanner = Scanner(string: line)
-        guard let firstIndex = lineScanner.scanInt(representation: .decimal) else {
-            continue // Invalid format
+    public enum ValidationPolicy {
+        case count
+        case indexed
+    }
+    
+    public init?(string: String) {
+        let lineScanner = Scanner(string: string)
+        guard let firstNumber = lineScanner.scanInt(representation: .decimal) else {
+            return nil
         }
         
         guard lineScanner.scanString("-") != nil else {
-            continue // Invalid format
+            return nil
         }
         
-        guard let secondIndex = lineScanner.scanInt(representation: .decimal) else {
-            continue // Invalid format
+        guard let nextNumber = lineScanner.scanInt(representation: .decimal) else {
+            return nil
         }
         
-        guard let letter = lineScanner.scanCharacter() else {
-            continue // Invalid format
+        guard let character = lineScanner.scanCharacter() else {
+            return nil
         }
         
         guard lineScanner.scanString(":") != nil else {
-            continue // Invalid format
+            return nil
         }
 
         guard let password = lineScanner.scanCharacters(from: .alphanumerics) else {
-            continue // Invalid format
+            return nil
         }
-        
-        let char1 = password[password.index(password.startIndex, offsetBy: (firstIndex - 1))]
-        let char2 = password[password.index(password.startIndex, offsetBy: (secondIndex - 1))]
 
-        if (char1 == letter) != (char2 == letter) {
-            validCount += 1
+        self.numbers = (firstNumber, nextNumber)
+        self.character = character
+        self.password = password
+    }
+    
+    public func validate(policy: ValidationPolicy) -> Bool {
+        switch policy {
+        case .count:
+            let letterCount = password.reduce(0) { $0 + (($1 == character) ? 1 : 0) }
+            return (numbers.0...numbers.1).contains(letterCount)
+        case .indexed:
+            let char1 = passwordCharacter(at: numbers.0 - 1)
+            let char2 = passwordCharacter(at: numbers.1 - 1)
+            return (char1 == character) != (char2 == character)
         }
     }
     
-    return validCount
+    func passwordCharacter(at offset: Int) -> Character {
+        return password[password.index(password.startIndex, offsetBy: offset)]
+    }
 }
 
