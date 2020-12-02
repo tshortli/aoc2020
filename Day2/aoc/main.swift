@@ -1014,4 +1014,8 @@ let input =
 4-9 f: xfcfthqzw
 """
 
-print(checkPasswords(input.components(separatedBy: "\n")))
+let part1Solution = checkPasswordsPart1(input.components(separatedBy: "\n"))
+print("Part 1: \(part1Solution)")
+
+let part2Solution = checkPasswordsPart2(input.components(separatedBy: "\n"))
+print("Part 2: \(part2Solution)")
