@@ -18,6 +18,6 @@ let vectors = [
     (1, 2)
 ]
 
-let treeCounts = vectors.map { router.countTrees(vector: $0) }
+let treeCounts = vectors.map { router.countTrees(vector: .init(x: $0.0, y: $0.1)) }
 let product = treeCounts.reduce(1, *)
 print("\(product)")
