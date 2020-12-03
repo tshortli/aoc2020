@@ -9,6 +9,15 @@ import AdventOfCode
 import Foundation
 
 let router = TobogganRouter(input: input)
-let treeCount = router.countTrees(vector: (3, 1))
-print("\(input)")
-print("\(treeCount)")
+
+let vectors = [
+    (1, 1),
+    (3, 1),
+    (5, 1),
+    (7, 1),
+    (1, 2)
+]
+
+let treeCounts = vectors.map { router.countTrees(vector: $0) }
+let product = treeCounts.reduce(1, *)
+print("\(product)")
