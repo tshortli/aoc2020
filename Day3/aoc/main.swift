@@ -8,4 +8,7 @@
 import AdventOfCode
 import Foundation
 
+let router = TobogganRouter(input: input)
+let treeCount = router.countTrees(vector: (3, 1))
 print("\(input)")
+print("\(treeCount)")
