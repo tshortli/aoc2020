@@ -8,8 +8,13 @@
 import Foundation
 
 public struct PassportValidator {
+    public enum Mode {
+        case weak
+        case strict
+    }
     
-    let lines: [String]
+    let passports: [String]
+    let mode: Mode
     let requiredKeysByValidator: [String: ((String) -> Bool)] = [
         "byr": validBirthYear,
         "iyr": validIssueYear,
@@ -20,12 +25,13 @@ public struct PassportValidator {
         "pid": validPassportID
     ]
         
-    public init(input: String) {
-        self.lines = input.components(separatedBy: "\n\n")
+    public init(input: String, mode: Mode) {
+        self.passports = input.components(separatedBy: "\n\n")
+        self.mode = mode
     }
     
     public func countValidPassports() -> Int {
-        return lines.filter { isValid(passport: $0) }.count
+        return passports.filter { isValid(passport: $0) }.count
     }
     
     func isValid(passport: String) -> Bool {
@@ -49,31 +55,35 @@ public struct PassportValidator {
             guard let value = keysAndValues[key] else {
                 return true // Missing
             }
-            return !validator(value)
+            
+            switch mode {
+            case .weak:
+                return false
+            case .strict:
+                return !validator(value)
+            }
         }
         return invalidKeys.isEmpty
     }
 }
 
-func validBirthYear(_ string: String) -> Bool {
+func validInt(_ string: String, in range: ClosedRange<Int>) -> Bool {
     guard let year = Int(string) else {
         return false
     }
-    return (1920...2002).contains(year)
+    return range.contains(year)
+}
+
+func validBirthYear(_ string: String) -> Bool {
+    return validInt(string, in: (1920...2002))
 }
 
 func validIssueYear(_ string: String) -> Bool {
-    guard let year = Int(string) else {
-        return false
-    }
-    return (2010...2020).contains(year)
+    return validInt(string, in: (2010...2020))
 }
 
 func validExpirationYear(_ string: String) -> Bool {
-    guard let year = Int(string) else {
-        return false
-    }
-    return (2020...2030).contains(year)
+    return validInt(string, in: (2020...2030))
 }
 
 func validHeight(_ string: String) -> Bool {
