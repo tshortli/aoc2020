@@ -8,10 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		9D0DF1BE2574396C007D498C /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D0DF1BD2574396C007D498C /* main.swift */; };
-		9D0DF21F25744217007D498C /* HelloWorld.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D0DF21E25744217007D498C /* HelloWorld.swift */; };
 		9D0DF2262574422D007D498C /* libAdventOfCode.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D0DF212257441E2007D498C /* libAdventOfCode.a */; };
 		9D0DF232257442CB007D498C /* AdventOfCodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D0DF231257442CB007D498C /* AdventOfCodeTests.swift */; };
 		9D0DF234257442CB007D498C /* libAdventOfCode.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D0DF212257441E2007D498C /* libAdventOfCode.a */; };
+		9D5E385C2579F9A10058ED24 /* Input.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5E385B2579F9A10058ED24 /* Input.swift */; };
+		9D5E38612579FA4F0058ED24 /* PassportValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5E38602579FA4F0058ED24 /* PassportValidator.swift */; };
+		9D5E38692579FA630058ED24 /* PassportValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5E38682579FA630058ED24 /* PassportValidatorTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,10 +58,12 @@
 		9D0DF1BA2574396C007D498C /* aoc */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = aoc; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D0DF1BD2574396C007D498C /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		9D0DF212257441E2007D498C /* libAdventOfCode.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAdventOfCode.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		9D0DF21E25744217007D498C /* HelloWorld.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelloWorld.swift; sourceTree = "<group>"; };
 		9D0DF22F257442CB007D498C /* AdventOfCodeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AdventOfCodeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D0DF231257442CB007D498C /* AdventOfCodeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventOfCodeTests.swift; sourceTree = "<group>"; };
 		9D0DF233257442CB007D498C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9D5E385B2579F9A10058ED24 /* Input.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Input.swift; sourceTree = "<group>"; };
+		9D5E38602579FA4F0058ED24 /* PassportValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassportValidator.swift; sourceTree = "<group>"; };
+		9D5E38682579FA630058ED24 /* PassportValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassportValidatorTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +118,7 @@
 			isa = PBXGroup;
 			children = (
 				9D0DF1BD2574396C007D498C /* main.swift */,
+				9D5E385B2579F9A10058ED24 /* Input.swift */,
 			);
 			path = aoc;
 			sourceTree = "<group>";
@@ -128,7 +133,7 @@
 		9D0DF213257441E2007D498C /* AdventOfCode */ = {
 			isa = PBXGroup;
 			children = (
-				9D0DF21E25744217007D498C /* HelloWorld.swift */,
+				9D5E38602579FA4F0058ED24 /* PassportValidator.swift */,
 			);
 			path = AdventOfCode;
 			sourceTree = "<group>";
@@ -138,6 +143,7 @@
 			children = (
 				9D0DF231257442CB007D498C /* AdventOfCodeTests.swift */,
 				9D0DF233257442CB007D498C /* Info.plist */,
+				9D5E38682579FA630058ED24 /* PassportValidatorTests.swift */,
 			);
 			path = AdventOfCodeTests;
 			sourceTree = "<group>";
@@ -313,6 +319,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9D5E385C2579F9A10058ED24 /* Input.swift in Sources */,
 				9D0DF1BE2574396C007D498C /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -321,7 +328,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9D0DF21F25744217007D498C /* HelloWorld.swift in Sources */,
+				9D5E38612579FA4F0058ED24 /* PassportValidator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -329,6 +336,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9D5E38692579FA630058ED24 /* PassportValidatorTests.swift in Sources */,
 				9D0DF232257442CB007D498C /* AdventOfCodeTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -8,4 +8,6 @@
 import AdventOfCode
 import Foundation
 
-HelloWorld.print()
+let validator = PassportValidator(input: input)
+let count = validator.countValidPassports()
+print("\(count)")
