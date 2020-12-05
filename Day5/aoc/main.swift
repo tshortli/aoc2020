@@ -8,4 +8,7 @@
 import AdventOfCode
 import Foundation
 
-HelloWorld.print()
+let processor = BoardingPassProcessor(input: input)
+if let answer = processor.highestSeatID() {
+    print("\(answer)")
+}

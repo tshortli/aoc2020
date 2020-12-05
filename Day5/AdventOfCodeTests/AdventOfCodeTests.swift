@@ -10,8 +10,4 @@ import XCTest
 
 class AdventOfCodeTests: XCTestCase {
 
-    func testExample() throws {
-        HelloWorld.print()
-    }
-
 }
