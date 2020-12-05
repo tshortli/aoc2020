@@ -5,6 +5,8 @@
 //  Created by Allan Shortlidge on 12/4/20.
 //
 
+// swiftlint:disable file_length
+
 import Foundation
 
 let input =

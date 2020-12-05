@@ -9,10 +9,10 @@ import AdventOfCode
 import Foundation
 
 let processor = BoardingPassProcessor(input: input)
-if let answer = processor.highestSeatID() {
+if let answer = processor.highestSeat() {
     print("\(answer)")
 }
 
-if let missingSeat = processor.missingSeatID() {
+if let missingSeat = processor.missingSeat() {
     print("\(missingSeat)")
 }

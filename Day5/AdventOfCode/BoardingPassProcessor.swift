@@ -9,56 +9,52 @@ import Foundation
 
 public struct BoardingPassProcessor {
     let lines: [String]
-    let rows = 128
-    let columns = 8
+    let maxIncrement: Int
     
     public init(input: String) {
         self.lines = input.components(separatedBy: .newlines)
+        
+        // Make sure the lines have homogeneous length.
+        let lengths = self.lines.reduce(into: Set<Int>()) { $0.insert($1.count) }
+        guard let length = lengths.first, lengths.count == 1 else {
+            fatalError("Invalid input")
+        }
+        self.maxIncrement = Int(pow(2.0, Double(length - 1)))
     }
     
-    public func seatPosition(for string: String) -> (Int, Int) {
-        var row = (0, rows)
-        var col = (0, columns)
-        for character in string {
+    public func seat(for string: String) -> Int {
+        // The strings form numbers in binary, so we can build the seat ID by adding decreasing powers of 2.
+        var increment = maxIncrement
+        func multiplier(_ character: Character) -> Int {
             switch character {
-            case "F":
-                row.1 -= max((row.1 - row.0) / 2, 1)
-            case "B":
-                row.0 += max((row.1 - row.0) / 2, 1)
-            case "L":
-                col.1 -= max((col.1 - col.0) / 2, 1)
-            case "R":
-                col.0 += max((col.1 - col.0) / 2, 1)
-            default:
-                fatalError("Unexpected char \(character)")
+            case "F", "L":   return 0
+            case "B", "R":   return 1
+            default:    fatalError("Unexpected char \(character)")
             }
         }
         
-        return (row.0, col.0)
-    }
-    
-    public func seatID(for string: String) -> Int {
-        let position = self.seatPosition(for: string)
-        return position.0 * columns + position.1
-    }
-    
-    public func seatIDs() -> [Int] {
-        return lines.map { seatID(for: $0) }
-    }
-    
-    public func highestSeatID() -> Int? {
-        return seatIDs().sorted().last
-    }
-    
-    public func missingSeatID() -> Int? {
-        let ids = seatIDs().sorted()
-        var lastSeatID = ids.first!
-        for seatID in ids[1...] {
-            if seatID != lastSeatID + 1 {
-                return seatID - 1
-            }
-            lastSeatID = seatID
+        return string.reduce(0) { seat, char in
+            let prevIncrement = increment
+            increment /= 2
+            return seat + multiplier(char) * prevIncrement
         }
-        return nil
     }
+    
+    func seats() -> [Int] {
+        return lines.map { seat(for: $0) }
+    }
+    
+    public func highestSeat() -> Int? {
+        return seats().sorted().last
+    }
+    
+    public func missingSeat() -> Int? {
+        return seats().sorted().reduce(nil) { result, next in
+            if let result = result {
+                return (next == result + 1) ? next : result
+            }
+            return next
+        }
+    }
+    
 }
