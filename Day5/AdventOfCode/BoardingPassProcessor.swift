@@ -49,4 +49,16 @@ public struct BoardingPassProcessor {
     public func highestSeatID() -> Int? {
         return seatIDs().sorted().last
     }
+    
+    public func missingSeatID() -> Int? {
+        let ids = seatIDs().sorted()
+        var lastSeatID = ids.first!
+        for seatID in ids[1...] {
+            if seatID != lastSeatID + 1 {
+                return seatID - 1
+            }
+            lastSeatID = seatID
+        }
+        return nil
+    }
 }

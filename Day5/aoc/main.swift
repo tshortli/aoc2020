@@ -12,3 +12,7 @@ let processor = BoardingPassProcessor(input: input)
 if let answer = processor.highestSeatID() {
     print("\(answer)")
 }
+
+if let missingSeat = processor.missingSeatID() {
+    print("\(missingSeat)")
+}
