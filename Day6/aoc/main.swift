@@ -8,10 +8,10 @@
 import AdventOfCode
 import Foundation
 
-let puzzle = Puzzle(input: input)
+let solver = Solver(input: input)
 
-let uniqueAnswersSum = puzzle.uniqueAnswersSum()
+let uniqueAnswersSum = solver.uniqueAnswersSum()
 print("\(uniqueAnswersSum)")
 
-let intersectingAnswersSum = puzzle.intersectingAnswersSum()
+let intersectingAnswersSum = solver.intersectingAnswersSum()
 print("\(intersectingAnswersSum)")

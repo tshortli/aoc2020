@@ -1,5 +1,5 @@
 //
-//  Puzzle.swift
+//  Solver.swift
 //  AdventOfCode
 //
 //  Created by Allan Shortlidge on 12/5/20.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Puzzle {
+public struct Solver {
     let groups: [String]
     
     public init(input: String) {
