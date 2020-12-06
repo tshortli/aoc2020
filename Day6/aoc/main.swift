@@ -9,5 +9,9 @@ import AdventOfCode
 import Foundation
 
 let puzzle = Puzzle(input: input)
-let count = puzzle.countOverlappingAnswers()
-print("\(count)")
+
+let uniqueAnswersSum = puzzle.uniqueAnswersSum()
+print("\(uniqueAnswersSum)")
+
+let intersectingAnswersSum = puzzle.intersectingAnswersSum()
+print("\(intersectingAnswersSum)")

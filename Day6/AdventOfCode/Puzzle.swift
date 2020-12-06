@@ -8,33 +8,29 @@
 import Foundation
 
 public struct Puzzle {
-    let answers: [String]
+    let groups: [String]
     
     public init(input: String) {
-        self.answers = input.components(separatedBy: "\n\n")
+        self.groups = input.components(separatedBy: "\n\n")
     }
     
-    public func countYesAnswers() -> Int {
-        return answers.reduce(0) { count, answer in
-            return count + answer.components(separatedBy: .newlines).reduce(into: Set<Character>()) { questions, line in
-                line.forEach { questions.insert($0) }
-            }.count
+    public func uniqueAnswersSum() -> Int {
+        return reduceAnswers(0) { sum, groupAnswers in
+            sum + groupAnswers.reduce(Set()) { $0.union($1) }.count
         }
     }
     
-    public func countOverlappingAnswers() -> Int {
-        return answers.reduce(0) { count, answer in
-            let questionSets = answer.components(separatedBy: .newlines).map {
-                $0.reduce(into: Set<Character>()) { questions, char in
-                    questions.insert(char)
-                }
-            }
-            
-            let first = questionSets.first!
-            let intersection = questionSets.reduce(first) { results, questions in
-                return results.intersection(questions)
-            }
-            return count + intersection.count
+    public func intersectingAnswersSum() -> Int {
+        return reduceAnswers(0) { sum, groupAnswers in
+            sum + groupAnswers.dropFirst().reduce(groupAnswers.first ?? Set()) { $0.intersection($1) }.count
         }
+    }
+
+    public func reduceAnswers(_ initial: Int, _ nextPartial: (Int, [Set<Character>]) -> Int) -> Int {
+        return groups.lazy.map { group in
+            return group.components(separatedBy: .newlines).map { answerLine in
+                answerLine.reduce(into: Set()) { $0.insert($1) }
+            }
+        }.reduce(initial, nextPartial)
     }
 }
