@@ -10,6 +10,8 @@ import Foundation
 
 let solver = Solver(input: input)
 
-let answer = solver.containers(for: "shiny gold").count
-print("\(answer)")
+let possibleContainers = solver.possibleContainers(for: "shiny gold").count
+print("\(possibleContainers)")
 
+let contained = solver.contained(by: "shiny gold").count
+print("\(contained)")
