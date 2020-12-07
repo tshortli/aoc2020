@@ -13,5 +13,5 @@ let solver = Solver(input: input)
 let possibleContainers = solver.possibleContainers(for: "shiny gold").count
 print("\(possibleContainers)")
 
-let contained = solver.contained(by: "shiny gold").count
+let contained = solver.containedCount(by: "shiny gold")
 print("\(contained)")

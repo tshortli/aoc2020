@@ -9,62 +9,42 @@ import Foundation
 
 public struct Solver {
     let possibleContainersByColor: [String: Set<String>]
-    let containedColorsByColor: [String: [String]]
+    let colorsByContainer: [String: [String]]
 
     public init(input: String) {
         var possibleContainersByColor: [String: Set<String>] = [:]
-        var containedColorsByColor: [String: [String]] = [:]
+        var colorsByContainer: [String: [String]] = [:]
         
         for line in input.components(separatedBy: .newlines) {
             let components = line.components(separatedBy: " bags contain")
             let containerColor = components[0]
             let clauses = components[1].components(separatedBy: ", ")
-            var contained: [String] = []
+            var containedColors: [String] = []
 
             for clause in clauses {
                 let scanner = Scanner(string: clause)
-                if let count = scanner.scanInt() {
-                    if let color = scanner.scanUpToString(" bag") {
-                        var containers = possibleContainersByColor[color] ?? Set()
-                        containers.insert(containerColor)
-                        possibleContainersByColor[color] = containers
-                        
-                        for _ in 1...count {
-                            contained.append(color)
-                        }
-                    } else {
-                        fatalError("Invalid format: \(line)")
-                    }
-                } else {
-                    continue
-                }
+                guard let count = scanner.scanInt() else { continue }
+                guard let color = scanner.scanUpToString(" bag") else { fatalError("Invalid format") }
                 
+                possibleContainersByColor[color, default: Set()].insert(containerColor)
+                containedColors += Array(repeating: color, count: count)
             }
             
-            containedColorsByColor[containerColor] = contained
+            colorsByContainer[containerColor] = containedColors
         }
         
         self.possibleContainersByColor = possibleContainersByColor
-        self.containedColorsByColor = containedColorsByColor
+        self.colorsByContainer = colorsByContainer
     }
     
     public func possibleContainers(for color: String) -> Set<String> {
-        if let containerColors = possibleContainersByColor[color] {
-            return containerColors.reduce(containerColors) { $0.union(possibleContainers(for: $1)) }
-        } else {
-            return Set()
-        }
+        let containers = possibleContainersByColor[color] ?? Set()
+        return containers.reduce(containers) { $0.union(possibleContainers(for: $1)) }
     }
     
-    public func contained(by color: String) -> [String] {
-        if let containedColors = containedColorsByColor[color] {
-            let result: [String] = containedColors.reduce(into: []) { result, value in
-                result.append(contentsOf: contained(by: value))
-            }
-            return result + containedColors
-        } else {
-            return []
-        }
+    public func containedCount(by color: String) -> Int {
+        let colors = colorsByContainer[color] ?? []
+        return colors.reduce(colors.count) { $0 + containedCount(by: $1) }
     }
         
 }

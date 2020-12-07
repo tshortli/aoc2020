@@ -25,7 +25,8 @@ class SolverTests: XCTestCase {
         """
         
         let solver = Solver(input: input)
-        XCTAssertEqual(solver.possibleContainers(for: "shiny gold"), Set(["bright white", "muted yellow", "dark orange", "light red"]))
+        let expectedContainers = ["bright white", "muted yellow", "dark orange", "light red"]
+        XCTAssertEqual(solver.possibleContainers(for: "shiny gold"), Set(expectedContainers))
     }
     
     func testExample2() throws {
@@ -41,6 +42,6 @@ class SolverTests: XCTestCase {
         """
         
         let solver = Solver(input: input)
-        XCTAssertEqual(solver.contained(by: "shiny gold").count, 126)
+        XCTAssertEqual(solver.containedCount(by: "shiny gold"), 126)
     }
 }
