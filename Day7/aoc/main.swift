@@ -10,5 +10,6 @@ import Foundation
 
 let solver = Solver(input: input)
 
-let answer = solver.answer()
+let answer = solver.containers(for: "shiny gold").count
 print("\(answer)")
+
