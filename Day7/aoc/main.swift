@@ -8,10 +8,10 @@
 import AdventOfCode
 import Foundation
 
-let solver = Solver(input: input)
+let evaluator = BagColorRuleEvaluator(input: input)
 
-let possibleContainers = solver.possibleContainers(for: "shiny gold").count
+let possibleContainers = evaluator.possibleContainers(for: "shiny gold").count
 print("\(possibleContainers)")
 
-let contained = solver.containedCount(by: "shiny gold")
+let contained = evaluator.containedCount(for: "shiny gold")
 print("\(contained)")

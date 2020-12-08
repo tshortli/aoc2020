@@ -1,5 +1,5 @@
 //
-//  Solver.swift
+//  BagColorRuleEvaluator.swift
 //  AdventOfCode
 //
 //  Created by Allan Shortlidge on 12/5/20.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Solver {
+public struct BagColorRuleEvaluator {
     let possibleContainersByColor: [String: Set<String>]
     let colorsByContainer: [String: [String]]
 
@@ -42,9 +42,9 @@ public struct Solver {
         return containers.reduce(containers) { $0.union(possibleContainers(for: $1)) }
     }
     
-    public func containedCount(by color: String) -> Int {
+    public func containedCount(for color: String) -> Int {
         let colors = colorsByContainer[color] ?? []
-        return colors.reduce(colors.count) { $0 + containedCount(by: $1) }
+        return colors.reduce(colors.count) { $0 + containedCount(for: $1) }
     }
         
 }

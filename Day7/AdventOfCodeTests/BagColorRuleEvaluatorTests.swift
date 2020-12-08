@@ -1,5 +1,5 @@
 //
-//  SolverTests.swift
+//  BagColorRuleEvaluatorTests.swift
 //  AdventOfCodeTests
 //
 //  Created by Allan Shortlidge on 12/5/20.
@@ -8,7 +8,7 @@
 import AdventOfCode
 import XCTest
 
-class SolverTests: XCTestCase {
+class BagColorRuleEvaluatorTests: XCTestCase {
 
     func testExample1() throws {
         let input =
@@ -24,9 +24,9 @@ class SolverTests: XCTestCase {
         dotted black bags contain no other bags.
         """
         
-        let solver = Solver(input: input)
+        let evaluator = BagColorRuleEvaluator(input: input)
         let expectedContainers = ["bright white", "muted yellow", "dark orange", "light red"]
-        XCTAssertEqual(solver.possibleContainers(for: "shiny gold"), Set(expectedContainers))
+        XCTAssertEqual(evaluator.possibleContainers(for: "shiny gold"), Set(expectedContainers))
     }
     
     func testExample2() throws {
@@ -41,7 +41,7 @@ class SolverTests: XCTestCase {
         dark violet bags contain no other bags.
         """
         
-        let solver = Solver(input: input)
-        XCTAssertEqual(solver.containedCount(by: "shiny gold"), 126)
+        let evaluator = BagColorRuleEvaluator(input: input)
+        XCTAssertEqual(evaluator.containedCount(for: "shiny gold"), 126)
     }
 }
