@@ -9,28 +9,32 @@ import Foundation
 
 public struct Computer {
     
+    public enum Result {
+        case success
+        case infiniteLoop
+    }
+    
     public let program: Program
     public private(set) var accumulator = 0
-    public private(set) var infiniteLoopDetected = false
 
     var programCounter = 0
-    var executedProgramCounters: Set<Int> = Set()
+    var executedProgramCounters = IndexSet()
     
     public init(program: Program) {
         self.program = program
     }
     
-    public mutating func run() {
-        while programCounter < program.instructionCount && !infiniteLoopDetected {
-            let instruction = program[programCounter]
-            executedProgramCounters.insert(programCounter)
-
-            execute(instruction)
-            
+    public mutating func run() -> Result {
+        while programCounter < program.instructionCount {
             if executedProgramCounters.contains(programCounter) {
-                infiniteLoopDetected = true
+                return .infiniteLoop
             }
+            
+            executedProgramCounters.insert(programCounter)
+            execute(program[programCounter])
         }
+        
+        return .success
     }
     
     mutating func execute(_ instruction: Instruction) {

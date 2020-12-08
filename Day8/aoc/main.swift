@@ -10,7 +10,7 @@ import Foundation
 
 let program = Program(input: input)
 var computer = Computer(program: program)
-computer.run()
+_ = computer.run()
 print("\(computer.accumulator)")
 
 // Find the corrupt instruction
@@ -19,8 +19,7 @@ for i in 0..<program.instructionCount {
     programCopy.swapInstructionOpcode(at: i)
     
     var computer = Computer(program: programCopy)
-    computer.run()
-    if !computer.infiniteLoopDetected {
+    if computer.run() == .success {
         print("\(computer.accumulator)")
         break
     }

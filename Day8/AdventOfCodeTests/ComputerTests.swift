@@ -13,9 +13,8 @@ class ComputerTests: XCTestCase {
     func testPart1() throws {
         let program = Program(input: day8Input())
         var computer = Computer(program: program)
-        computer.run()
         
-        XCTAssert(computer.infiniteLoopDetected)
+        XCTAssertEqual(computer.run(), .infiniteLoop)
         XCTAssertEqual(computer.accumulator, 5)
     }
     
@@ -24,9 +23,7 @@ class ComputerTests: XCTestCase {
         program.swapInstructionOpcode(at: 7)
         
         var computer = Computer(program: program)
-        computer.run()
-        
-        XCTAssertFalse(computer.infiniteLoopDetected)
+        XCTAssertEqual(computer.run(), .success)
         XCTAssertEqual(computer.accumulator, 8)
     }
     
