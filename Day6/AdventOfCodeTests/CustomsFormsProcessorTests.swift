@@ -1,5 +1,5 @@
 //
-//  SolverTests.swift
+//  CustomsFormsProcessorTests.swift
 //  AdventOfCodeTests
 //
 //  Created by Allan Shortlidge on 12/5/20.
@@ -8,21 +8,21 @@
 import AdventOfCode
 import XCTest
 
-class SolverTests: XCTestCase {
+class CustomsFormsProcessorTests: XCTestCase {
 
     func testPart1_Example1() throws {
-        let puzzle = Puzzle(input: exampleInput1())
-        XCTAssertEqual(puzzle.uniqueAnswersSum(), 6)
+        let processor = CustomsFormsProcessor(input: exampleInput1())
+        XCTAssertEqual(processor.uniqueAnswersSum(), 6)
     }
     
     func testPart1_Example2() throws {
-        let puzzle = Puzzle(input: exampleInput2())
-        XCTAssertEqual(puzzle.uniqueAnswersSum(), 11)
+        let processor = CustomsFormsProcessor(input: exampleInput2())
+        XCTAssertEqual(processor.uniqueAnswersSum(), 11)
     }
 
     func testPart2() throws {
-        let puzzle = Puzzle(input: exampleInput2())
-        XCTAssertEqual(puzzle.intersectingAnswersSum(), 6)
+        let processor = CustomsFormsProcessor(input: exampleInput2())
+        XCTAssertEqual(processor.intersectingAnswersSum(), 6)
     }
     
     func exampleInput1() -> String {

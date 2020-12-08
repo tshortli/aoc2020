@@ -8,10 +8,10 @@
 import AdventOfCode
 import Foundation
 
-let solver = Solver(input: input)
+let processor = CustomsFormsProcessor(input: input)
 
-let uniqueAnswersSum = solver.uniqueAnswersSum()
+let uniqueAnswersSum = processor.uniqueAnswersSum()
 print("\(uniqueAnswersSum)")
 
-let intersectingAnswersSum = solver.intersectingAnswersSum()
+let intersectingAnswersSum = processor.intersectingAnswersSum()
 print("\(intersectingAnswersSum)")

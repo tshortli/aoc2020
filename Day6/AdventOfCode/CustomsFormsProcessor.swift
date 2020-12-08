@@ -1,5 +1,5 @@
 //
-//  Solver.swift
+//  CustomsFormsProcessor.swift
 //  AdventOfCode
 //
 //  Created by Allan Shortlidge on 12/5/20.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Solver {
+public struct CustomsFormsProcessor {
     let groups: [String]
     
     public init(input: String) {
@@ -28,9 +28,7 @@ public struct Solver {
 
     public func reduceAnswers(_ initial: Int, _ nextPartial: (Int, [Set<Character>]) -> Int) -> Int {
         return groups.lazy.map { group in
-            return group.components(separatedBy: .newlines).map { answerLine in
-                answerLine.reduce(into: Set()) { $0.insert($1) }
-            }
+            group.components(separatedBy: .newlines).map { Set($0) }
         }.reduce(initial, nextPartial)
     }
 }
