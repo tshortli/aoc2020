@@ -8,10 +8,12 @@
 import Foundation
 
 public struct Solver {
-    let program: [String]
+    public let program: [String]
+    public var programCounterToMutate: Int? = nil
     public var accumulator = 0
     var programCounter = 0
     var executedProgramCounters: Set<Int> = Set()
+    public var infiniteLoopDetected = false
     
     enum Instruction: String {
         case nop
@@ -25,28 +27,38 @@ public struct Solver {
     
     public mutating func run() {
         while programCounter < program.count {
-            executedProgramCounters.insert(programCounter)
-            execute(program[programCounter])
+            executeNextInstruction()
             
             // Halt if infinite loop detected
             if executedProgramCounters.contains(programCounter) {
+                infiniteLoopDetected = true
                 break
             }
         }
     }
     
-    mutating func execute(_ string: String) {
-        let scanner = Scanner(string: string)
+    mutating func executeNextInstruction() {
+        let rawInstruction = program[programCounter]
+        executedProgramCounters.insert(programCounter)
+
+        let scanner = Scanner(string: rawInstruction)
         guard let op = scanner.scanUpToCharacters(from: .whitespacesAndNewlines) else {
             return
         }
         
-        guard let instruction = Instruction(rawValue: op) else { fatalError("Invalid op \(op)") }
+        guard var instruction = Instruction(rawValue: op) else { fatalError("Invalid op \(op)") }
         guard let sign = scanner.scanCharacters(from: .init(charactersIn: "+-"))  else { fatalError("Invalid op \(op)") }
+        let multiplier = (sign == "-") ? -1 : 1
         guard var value = scanner.scanInt() else { fatalError("Invalid op \(op)") }
 
-        if sign == "-" {
-            value = -value
+        value = multiplier * value
+        
+        if programCounter == programCounterToMutate {
+            switch instruction {
+            case .nop: instruction = .jmp
+            case .acc: break
+            case .jmp: instruction = .nop
+            }
         }
         
         switch instruction {

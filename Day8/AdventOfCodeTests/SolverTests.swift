@@ -27,6 +27,12 @@ class SolverTests: XCTestCase {
         var solver = Solver(input: input)
         solver.run()
         XCTAssertEqual(solver.accumulator, 5)
+        
+        var mutatedSolver = Solver(input: input)
+        mutatedSolver.programCounterToMutate = 7
+        
+        mutatedSolver.run()
+        XCTAssertFalse(mutatedSolver.infiniteLoopDetected)
+        XCTAssertEqual(mutatedSolver.accumulator, 8)
     }
-
 }
