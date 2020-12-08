@@ -8,17 +8,20 @@
 import AdventOfCode
 import Foundation
 
-var solver = Solver(input: input)
-solver.run()
-print("\(solver.accumulator)")
+let program = Program(input: input)
+var computer = Computer(program: program)
+computer.run()
+print("\(computer.accumulator)")
 
-for i in 0..<solver.program.count {
-    var mutatedSolver = Solver(input: input)
-    mutatedSolver.programCounterToMutate = i
+// Find the corrupt instruction
+for i in 0..<program.instructionCount {
+    var programCopy = program
+    programCopy.swapInstructionOpcode(at: i)
     
-    mutatedSolver.run()
-    if !mutatedSolver.infiniteLoopDetected {
-        print("\(mutatedSolver.accumulator)")
+    var computer = Computer(program: programCopy)
+    computer.run()
+    if !computer.infiniteLoopDetected {
+        print("\(computer.accumulator)")
         break
     }
 }
