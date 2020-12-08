@@ -11,7 +11,22 @@ import XCTest
 class SolverTests: XCTestCase {
 
     func testExample() throws {
-
+        let input =
+        """
+        nop +0
+        acc +1
+        jmp +4
+        acc +3
+        jmp -3
+        acc -99
+        acc +1
+        jmp -4
+        acc +6
+        """
+        
+        var solver = Solver(input: input)
+        solver.run()
+        XCTAssertEqual(solver.accumulator, 5)
     }
 
 }

@@ -8,7 +8,6 @@
 import AdventOfCode
 import Foundation
 
-let solver = Solver(input: input)
-
-let answer = solver.answer()
-print("\(answer)")
+var solver = Solver(input: input)
+solver.run()
+print("\(solver.accumulator)")
