@@ -18,8 +18,9 @@ public struct EncryptionBreaker {
     
     public func findFirstNonSum() -> Int {
         outerloop: for i in preamble..<numbers.count {
-            for v1 in numbers[(i - preamble)..<i] {
-                for v2 in numbers[(i + 1 - preamble)..<i] where numbers[i] == v1 + v2 && v1 != v2 {
+            let sequence = numbers[(i - preamble)..<i]
+            for v1 in sequence {
+                for v2 in sequence[1...] where numbers[i] == v1 + v2 && v1 != v2 {
                     continue outerloop
                 }
             }
