@@ -35,10 +35,10 @@ class SolverTests: XCTestCase {
         576
         """
         
-        let solver = Solver(input: input, preamble: 5)
-        XCTAssertEqual(solver.answer(), 127)
+        let solver = EncryptionBreaker(input: input, preamble: 5)
+        XCTAssertEqual(solver.findFirstNonSum(), 127)
         
-        XCTAssertEqual(solver.part2(), 62)
+        XCTAssertEqual(solver.findEncryptionWeakness(), 62)
     }
 
 }

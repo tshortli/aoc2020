@@ -8,10 +8,10 @@
 import AdventOfCode
 import Foundation
 
-let solver = Solver(input: input, preamble: 25)
+let solver = EncryptionBreaker(input: input, preamble: 25)
 
-let answer = solver.answer()
+let answer = solver.findFirstNonSum()
 print("\(answer)")
 
-let part2 = solver.part2()
+let part2 = solver.findEncryptionWeakness()
 print("\(part2)")
