@@ -34,4 +34,23 @@ public struct Solver {
         fatalError()
     }
     
+    public func part2() -> Int {
+        let target = answer()
+        for i in 0..<numbers.count {
+            var smallest = numbers[i]
+            var largest = numbers[i]
+            var sum = numbers[i]
+            for j in (i + 1)..<numbers.count {
+                smallest = min(smallest, numbers[j])
+                largest = max(largest, numbers[j])
+                sum += numbers[j]
+                if sum == target {
+                    return smallest + largest
+                }
+            }
+        }
+        
+        fatalError()
+    }
+    
 }

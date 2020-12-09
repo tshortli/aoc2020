@@ -37,6 +37,8 @@ class SolverTests: XCTestCase {
         
         let solver = Solver(input: input, preamble: 5)
         XCTAssertEqual(solver.answer(), 127)
+        
+        XCTAssertEqual(solver.part2(), 62)
     }
 
 }

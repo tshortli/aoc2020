@@ -12,3 +12,6 @@ let solver = Solver(input: input, preamble: 25)
 
 let answer = solver.answer()
 print("\(answer)")
+
+let part2 = solver.part2()
+print("\(part2)")
