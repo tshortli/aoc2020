@@ -10,7 +10,7 @@
 		9D0DF1BE2574396C007D498C /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D0DF1BD2574396C007D498C /* main.swift */; };
 		9D0DF2262574422D007D498C /* libAdventOfCode.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D0DF212257441E2007D498C /* libAdventOfCode.a */; };
 		9D0DF234257442CB007D498C /* libAdventOfCode.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D0DF212257441E2007D498C /* libAdventOfCode.a */; };
-		9D53DC2E257CB1D1006FCC75 /* SolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D53DC2D257CB1D1006FCC75 /* SolverTests.swift */; };
+		9D53DC2E257CB1D1006FCC75 /* EncryptionBreakerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D53DC2D257CB1D1006FCC75 /* EncryptionBreakerTests.swift */; };
 		9DA527B6257C9C5A000AF44B /* Input.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DA527B5257C9C5A000AF44B /* Input.swift */; };
 		9DA527BB257C9CC5000AF44B /* EncryptionBreaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DA527BA257C9CC5000AF44B /* EncryptionBreaker.swift */; };
 /* End PBXBuildFile section */
@@ -59,7 +59,7 @@
 		9D0DF212257441E2007D498C /* libAdventOfCode.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAdventOfCode.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D0DF22F257442CB007D498C /* AdventOfCodeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AdventOfCodeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D0DF233257442CB007D498C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9D53DC2D257CB1D1006FCC75 /* SolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolverTests.swift; sourceTree = "<group>"; };
+		9D53DC2D257CB1D1006FCC75 /* EncryptionBreakerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionBreakerTests.swift; sourceTree = "<group>"; };
 		9DA527B5257C9C5A000AF44B /* Input.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Input.swift; sourceTree = "<group>"; };
 		9DA527BA257C9CC5000AF44B /* EncryptionBreaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionBreaker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -139,7 +139,7 @@
 		9D0DF230257442CB007D498C /* AdventOfCodeTests */ = {
 			isa = PBXGroup;
 			children = (
-				9D53DC2D257CB1D1006FCC75 /* SolverTests.swift */,
+				9D53DC2D257CB1D1006FCC75 /* EncryptionBreakerTests.swift */,
 				9D0DF233257442CB007D498C /* Info.plist */,
 			);
 			path = AdventOfCodeTests;
@@ -333,7 +333,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9D53DC2E257CB1D1006FCC75 /* SolverTests.swift in Sources */,
+				9D53DC2E257CB1D1006FCC75 /* EncryptionBreakerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
