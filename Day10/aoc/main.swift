@@ -8,11 +8,11 @@
 import AdventOfCode
 import Foundation
 
-let solver = Solver(input: input)
+let organizer = AdapterOrganizer(input: input)
 
-let answer = solver.differencesDistribution()
+let answer = organizer.differencesDistribution()
 print("\(answer)")
 print("\(answer[1]! * answer[3]!)")
 
-let possibleArrangements = solver.possibleArrangements()
+let possibleArrangements = organizer.possibleArrangements()
 print("\(possibleArrangements)")

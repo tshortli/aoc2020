@@ -1,5 +1,5 @@
 //
-//  SolverTests.swift
+//  AdapterOrganizerTests.swift
 //  AdventOfCodeTests
 //
 //  Created by Allan Shortlidge on 12/5/20.
@@ -8,7 +8,7 @@
 import AdventOfCode
 import XCTest
 
-class SolverTests: XCTestCase {
+class AdapterOrganizerTests: XCTestCase {
 
     func testExample1() throws {
         let input =
@@ -26,9 +26,9 @@ class SolverTests: XCTestCase {
         4
         """
         
-        let solver = Solver(input: input)
-        XCTAssertEqual(solver.differencesDistribution(), [1: 7, 3: 5])
-        XCTAssertEqual(solver.possibleArrangements(), 8)
+        let organizer = AdapterOrganizer(input: input)
+        XCTAssertEqual(organizer.differencesDistribution(), [1: 7, 3: 5])
+        XCTAssertEqual(organizer.possibleArrangements(), 8)
     }
     
     func testExample2() throws {
@@ -67,9 +67,9 @@ class SolverTests: XCTestCase {
         3
         """
         
-        let solver = Solver(input: input)
-        XCTAssertEqual(solver.differencesDistribution(), [1: 22, 3: 10])
-        XCTAssertEqual(solver.possibleArrangements(), 19_208)
+        let organizer = AdapterOrganizer(input: input)
+        XCTAssertEqual(organizer.differencesDistribution(), [1: 22, 3: 10])
+        XCTAssertEqual(organizer.possibleArrangements(), 19_208)
     }
 
 }
