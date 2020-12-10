@@ -10,5 +10,6 @@ import Foundation
 
 let solver = Solver(input: input)
 
-let answer = solver.answer()
+let answer = solver.differencesDistribution()
 print("\(answer)")
+print("\(answer[1]! * answer[3]!)")
