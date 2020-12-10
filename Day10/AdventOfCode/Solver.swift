@@ -31,4 +31,22 @@ public struct Solver {
         return differences
     }
     
+    public func possibleArrangements() -> Int {
+        var sortedJoltages = joltages.sorted()
+        sortedJoltages.insert(0, at: 0)
+        let lastJoltage = sortedJoltages.last! + 3
+        sortedJoltages.append(lastJoltage)
+        
+        var map: [Int: Int] = [lastJoltage: 1]
+        for joltage in sortedJoltages.reversed() {
+            if let count = map[joltage] {
+                for possibleJoltage in sortedJoltages.filter({ (joltage - 3..<joltage).contains($0) }) {
+                    map[possibleJoltage, default: 0] += count
+                }
+            }
+        }
+        
+        return map[0]!
+    }
+    
 }

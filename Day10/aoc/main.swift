@@ -13,3 +13,6 @@ let solver = Solver(input: input)
 let answer = solver.differencesDistribution()
 print("\(answer)")
 print("\(answer[1]! * answer[3]!)")
+
+let possibleArrangements = solver.possibleArrangements()
+print("\(possibleArrangements)")

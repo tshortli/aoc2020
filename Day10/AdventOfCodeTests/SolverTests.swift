@@ -28,6 +28,7 @@ class SolverTests: XCTestCase {
         
         let solver = Solver(input: input)
         XCTAssertEqual(solver.differencesDistribution(), [1: 7, 3: 5])
+        XCTAssertEqual(solver.possibleArrangements(), 8)
     }
     
     func testExample2() throws {
@@ -68,6 +69,7 @@ class SolverTests: XCTestCase {
         
         let solver = Solver(input: input)
         XCTAssertEqual(solver.differencesDistribution(), [1: 22, 3: 10])
+        XCTAssertEqual(solver.possibleArrangements(), 19_208)
     }
 
 }
