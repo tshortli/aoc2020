@@ -10,7 +10,7 @@ import XCTest
 
 class SolverTests: XCTestCase {
 
-    func testExample() throws {
+    func testMainExample() throws {
         let input =
         """
         L.LL.LL.LL
@@ -25,14 +25,48 @@ class SolverTests: XCTestCase {
         L.LLLLL.LL
         """
         
-        var solver = Solver(input: input)
-        XCTAssertEqual(solver.countOccupiedSeats(), 0)
-        solver.simulate()
-        XCTAssertEqual(solver.countOccupiedSeats(), 71)
-        XCTAssertEqual(solver.countAdjacentOccupiedSeats(at: 9), 3)
+        // Part 1
+        var solver1 = Solver(input: input, style: .adjacent)
+        XCTAssertEqual(solver1.countOccupiedSeats(), 0)
+        solver1.simulate()
+        XCTAssertEqual(solver1.countOccupiedSeats(), 71)
+        XCTAssertEqual(solver1.countOccupiedSeats(for: 9), 3)
+        solver1.simulate()
+        XCTAssertEqual(solver1.countOccupiedSeats(), 20)
+
+        solver1.simulateUntilStable()
+        XCTAssertEqual(solver1.countOccupiedSeats(), 37)
         
-        solver.simulateUntilStable()
-        XCTAssertEqual(solver.countOccupiedSeats(), 37)
+        // Part 2
+        var solver2 = Solver(input: input, style: .visible)
+        XCTAssertEqual(solver2.countOccupiedSeats(), 0)
+        solver2.simulate()
+        XCTAssertEqual(solver2.countOccupiedSeats(), 71)
+        solver2.simulate()
+        XCTAssertEqual(solver2.countOccupiedSeats(), 7)
+        solver2.simulate()
+        XCTAssertEqual(solver2.countOccupiedSeats(), 53)
+
+        solver2.simulateUntilStable()
+        XCTAssertEqual(solver2.countOccupiedSeats(), 26)
     }
 
+    func testCountVisibleOccupiedSeats() throws {
+        let input =
+        """
+        .......#.
+        ...#.....
+        .#.......
+        .........
+        ..#L....#
+        ....#....
+        .........
+        #........
+        ...#.....
+        """
+        
+        let solver = Solver(input: input, style: .visible)
+        XCTAssertEqual(solver.countOccupiedSeats(for: 9 * 4 + 3), 8)
+
+    }
 }

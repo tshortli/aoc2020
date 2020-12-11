@@ -8,6 +8,11 @@
 import Foundation
 
 public struct Solver {
+    public enum Style {
+        case adjacent
+        case visible
+    }
+    
     enum Space {
         case floor
         case empty
@@ -15,10 +20,11 @@ public struct Solver {
     }
     
     var spaces: [Space]
+    let style: Style
     let width: Int
     let height: Int
     
-    public init(input: String) {
+    public init(input: String, style: Style) {
         let lines = input.components(separatedBy: .newlines)
         self.width = lines.first?.count ?? 0
         self.height = lines.count
@@ -28,19 +34,23 @@ public struct Solver {
                 switch $0 {
                 case ".": return .floor
                 case "L": return .empty
+                case "#": return .occupied
                 default: fatalError()
                 }
             })
         }
         self.spaces = spaces
+        self.style = style
     }
     
     mutating public func simulate() {
+        let occupiedThreshold = (style == .adjacent) ? 4 : 5
+        
         spaces = spaces.enumerated().map { (i, space) in
-            let adjacentOccupied = countAdjacentOccupiedSeats(at: i)
-            if space == .empty && adjacentOccupied == 0 {
+            let occupiedCount = countOccupiedSeats(for: i)
+            if space == .empty && occupiedCount == 0 {
                 return .occupied
-            } else if space == .occupied && adjacentOccupied >= 4 {
+            } else if space == .occupied && occupiedCount >= occupiedThreshold {
                 return .empty
             }
             return space
@@ -57,7 +67,14 @@ public struct Solver {
         }
     }
     
-    public func countAdjacentOccupiedSeats(at index: Int) -> Int {
+    public func countOccupiedSeats(for index: Int) -> Int {
+        switch style {
+        case .adjacent: return countAdjacentOccupiedSeats(for: index)
+        case .visible: return countVisibleOccupiedSeats(for: index)
+        }
+    }
+    
+    func countAdjacentOccupiedSeats(for index: Int) -> Int {
         let row = index / width
         let col = index % width
         return [
@@ -71,23 +88,32 @@ public struct Solver {
         }.count
     }
     
+    func countVisibleOccupiedSeats(for index: Int) -> Int {
+        let vectors = [
+            (-1, -1), (-1, 0), (-1, 1),
+            (0, -1), (0, 1),
+            (1, -1), (1, 0), (1, 1)
+        ]
+        
+        return vectors.filter { (vr, vc) in
+            var r = index / width + vr
+            var c = index % width + vc
+
+            while r >= 0 && r < height && c >= 0 && c < width {
+                switch spaces[r * width + c] {
+                case .floor: break
+                case .empty: return false
+                case .occupied: return true
+                }
+                r += vr
+                c += vc
+            }
+            return false
+        }.count
+    }
+    
     public func countOccupiedSeats() -> Int {
         return spaces.filter { $0 == .occupied }.count
     }
-    
-//    public func render() -> String {
-//        return spaces.enumerated().reduce(into: String()) { string, (index, space) in
-//            string += character(for: space)
-//            return char + (space % width == 1) ? "\n" : ""
-//        }
-//    }
-//
-//    func character(for space: Space) -> Character {
-//        switch space {
-//        case .floor: return "."
-//        case .empty: return "L"
-//        case .occupied: return "#"
-//        }
-//    }
 }
 

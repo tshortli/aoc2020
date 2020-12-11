@@ -8,7 +8,7 @@
 import AdventOfCode
 import Foundation
 
-var solver = Solver(input: input)
+var solver = Solver(input: input, style: .visible)
 
 solver.simulateUntilStable()
 let answer = solver.countOccupiedSeats()
