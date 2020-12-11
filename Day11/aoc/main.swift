@@ -8,8 +8,10 @@
 import AdventOfCode
 import Foundation
 
-var solver = Solver(input: input, style: .visible)
+var simulator1 = SeatSimulator(input: input, style: .adjacent)
+simulator1.run()
+print("\(simulator1.countOccupiedSeats())")
 
-solver.simulateUntilStable()
-let answer = solver.countOccupiedSeats()
-print("\(answer)")
+var simulator2 = SeatSimulator(input: input, style: .visible)
+simulator2.run()
+print("\(simulator2.countOccupiedSeats())")
