@@ -20,10 +20,15 @@ class SolverTests: XCTestCase {
         F11
         """
         
-        var solver = Solver(input: input)
-        XCTAssertEqual(solver.answer(), 25)
-        XCTAssertEqual(solver.position.0, -8)
-        XCTAssertEqual(solver.position.1, 17)
+//        var solver1 = Solver(input: input, waypoint: (0, 1))
+//        XCTAssertEqual(solver1.answer(), 25)
+//        XCTAssertEqual(solver1.position.0, -8)
+//        XCTAssertEqual(solver1.position.1, 17)
+        
+        var solver2 = Solver(input: input, waypoint: (1, 10))
+        XCTAssertEqual(solver2.answer(), 286)
+        XCTAssertEqual(solver2.position.0, -72)
+        XCTAssertEqual(solver2.position.1, 214)
     }
 
 }

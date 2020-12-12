@@ -8,35 +8,6 @@
 import Foundation
 
 public struct Solver {
-    public enum Direction: Int {
-        case north = 0
-        case east = 90
-        case south = 180
-        case west = 270
-        
-        var vector: (Int, Int) {
-            switch self {
-            case .north:
-                return (1, 0)
-            case .east:
-                return (0, 1)
-            case .south:
-                return (-1, 0)
-            case .west:
-                return (0, -1)
-            }
-        }
-        
-        func direction(with angle: Int) -> Self {
-            let rawAngle = (rawValue + angle) % 360
-            if rawAngle < 0 {
-                return Direction(rawValue: 360 + rawAngle)!
-            } else {
-                return Direction(rawValue: rawAngle)!
-            }
-        }
-    }
-    
     enum Instruction: Character {
         case north = "N"
         case east = "E"
@@ -49,9 +20,9 @@ public struct Solver {
     
     let route: [(Instruction, Int)]
     public private(set) var position: (Int, Int) = (0, 0)
-    public private(set) var direction: Direction = .east
-    
-    public init(input: String) {
+    public private(set) var waypoint: (Int, Int)
+
+    public init(input: String, waypoint: (Int, Int)) {
         let lines = input.components(separatedBy: .newlines)
         var route: [(Instruction, Int)] = []
         lines.forEach {
@@ -61,46 +32,60 @@ public struct Solver {
             route.append((instruction, number))
         }
         self.route = route
+        self.waypoint = waypoint
     }
     
     mutating public func answer() -> Int {
         route.forEach { (instruction, value) in
-            var vector: (Int, Int) = (0, 0)
+            var waypointVector: (Int, Int) = (0, 0)
+            var positionVector: (Int, Int) = (0, 0)
             var multiplier: Int = 1
-            var newDirection: Direction?
             switch instruction {
             case .north:
-                vector = Direction.north.vector
+                waypointVector = (1, 0)
                 multiplier = value
             case .east:
-                vector = Direction.east.vector
+                waypointVector = (0, 1)
                 multiplier = value
             case .south:
-                vector = Direction.south.vector
+                waypointVector = (-1, 0)
                 multiplier = value
             case .west:
-                vector = Direction.west.vector
+                waypointVector = (0, -1)
                 multiplier = value
             case .forward:
-                vector = direction.vector
+                positionVector = waypoint
                 multiplier = value
             case .left:
-                newDirection = direction.direction(with: -value)
+                waypoint = rotated(vector: waypoint, angle: -value)
             case .right:
-                newDirection = direction.direction(with: value)
+                waypoint = rotated(vector: waypoint, angle: value)
             }
             
-            position.0 += vector.0 * multiplier
-            position.1 += vector.1 * multiplier
+            waypoint.0 += waypointVector.0 * multiplier
+            waypoint.1 += waypointVector.1 * multiplier
             
-            if let newDirection = newDirection {
-                direction = newDirection
-            }
-            
-            print("\(direction) (\(position.0), \(position.1))")
+            position.0 += positionVector.0 * multiplier
+            position.1 += positionVector.1 * multiplier
+                        
+            print("Position (\(position.0), \(position.1)), waypoint (\(waypoint.0), \(waypoint.1))")
         }
         
         return abs(position.0) + abs(position.1)
+    }
+    
+    func rotated(vector: (Int, Int), angle: Int) -> (Int, Int) {
+        let normalizedAngle = (angle > 0) ? angle : (360 + angle)
+        switch normalizedAngle {
+        case 90:
+            return (-vector.1, vector.0)
+        case 180:
+            return (-vector.0, -vector.1)
+        case 270:
+            return (vector.1, -vector.0)
+        default:
+            fatalError()
+        }
     }
     
 }
