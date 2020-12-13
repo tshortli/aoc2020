@@ -8,8 +8,7 @@
 import AdventOfCode
 import Foundation
 
-var navigator1 = Navigator(input: input, style: .part1, waypoint: (0, 1))
-print("\(navigator1.answer())")
+let navigator = Navigator(input: input)
 
-var navigator2 = Navigator(input: input, style: .part2, waypoint: (1, 10))
-print("\(navigator2.answer())")
+print("\(navigator.navigate(style: .part1, waypoint: Point(0, 1)).manhattanDistance)")
+print("\(navigator.navigate(style: .part2, waypoint: Point(1, 10)).manhattanDistance)")

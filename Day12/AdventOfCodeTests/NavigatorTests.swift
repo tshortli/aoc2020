@@ -9,7 +9,7 @@ import AdventOfCode
 import XCTest
 
 class NavigatorTests: XCTestCase {
-
+    
     func testExample() throws {
         let input =
         """
@@ -20,15 +20,16 @@ class NavigatorTests: XCTestCase {
         F11
         """
         
-        var navigator1 = Navigator(input: input, style: .part1, waypoint: (0, 1))
-        XCTAssertEqual(navigator1.answer(), 25)
-//        XCTAssertEqual(navigator1.position.0, -8)
-//        XCTAssertEqual(navigator1.position.1, 17)
+        let navigator1 = Navigator(input: input, waypoint: Point(0, 1))
+        let answer1 = navigator1.navigate(style: .part1)
+        XCTAssertEqual(answer1.manhattanDistance, 25)
+        XCTAssertEqual(answer1.north, -8)
+        XCTAssertEqual(answer1.east, 17)
         
-        var navigator2 = Navigator(input: input, style: .part2, waypoint: (1, 10))
-        XCTAssertEqual(navigator2.answer(), 286)
-//        XCTAssertEqual(navigator2.position.0, -72)
-//        XCTAssertEqual(navigator2.position.1, 214)
+        let answer2 = navigator1.navigate(style: .part2)
+        XCTAssertEqual(answer2.manhattanDistance, 286)
+        XCTAssertEqual(answer2.north, -72)
+        XCTAssertEqual(answer2.east, 214)
     }
 
 }

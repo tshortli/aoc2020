@@ -7,6 +7,38 @@
 
 import Foundation
 
+public struct Point: Equatable {
+    public var north: Int
+    public var east: Int
+    
+    public init(_ north: Int, _ east: Int) {
+        self.north = north
+        self.east = east
+    }
+    
+    mutating func rotate(by angle: Int) {
+        let prev = self
+        let normalizedAngle = (angle > 0) ? angle : (360 + angle)
+        switch normalizedAngle {
+        case 90:
+            north = -prev.east
+            east = prev.north
+        case 180:
+            north = -prev.north
+            east = -prev.east
+        case 270:
+            north = prev.east
+            east = -prev.north
+        default:
+            fatalError()
+        }
+    }
+    
+    public var manhattanDistance: Int {
+        return abs(north) + abs(east)
+    }
+}
+
 public struct Navigator {
     public enum Style {
         case part1
@@ -24,10 +56,8 @@ public struct Navigator {
     }
     
     let route: [(Instruction, Int)]
-    let style: Style
-    public let waypoint: (Int, Int)
 
-    public init(input: String, style: Style, waypoint: (Int, Int)) {
+    public init(input: String, waypoint: Point) {
         let lines = input.components(separatedBy: .newlines)
         var route: [(Instruction, Int)] = []
         lines.forEach {
@@ -37,16 +67,14 @@ public struct Navigator {
             route.append((instruction, number))
         }
         self.route = route
-        self.style = style
-        self.waypoint = waypoint
     }
     
-    mutating public func answer() -> Int {
-        var position = (0, 0)
-        var waypoint = self.waypoint
+    public func navigate(style: Style, waypoint initialWaypoint: Point) -> Point {
+        var position = Point(0, 0)
+        var waypoint = initialWaypoint
         
-        func handleDirection(with vector: (Int, Int)) {
-            switch self.style {
+        func handleDirection(with vector: Point) {
+            switch style {
             case .part1: position += vector
             case .part2: waypoint += vector
             }
@@ -55,46 +83,33 @@ public struct Navigator {
         route.forEach { (instruction, value) in
             switch instruction {
             case .north:
-                handleDirection(with: (value, 0))
+                handleDirection(with: Point(value, 0))
             case .east:
-                handleDirection(with: (0, value))
+                handleDirection(with: Point(0, value))
             case .south:
-                handleDirection(with: (-value, 0))
+                handleDirection(with: Point(-value, 0))
             case .west:
-                handleDirection(with: (0, -value))
+                handleDirection(with: Point(0, -value))
             case .forward:
                 position += (waypoint * value)
             case .left:
-                waypoint = rotate(vector: waypoint, by: -value)
+                waypoint.rotate(by: -value)
             case .right:
-                waypoint = rotate(vector: waypoint, by: value)
+                waypoint.rotate(by: value)
             }
+            print("\(instruction) \(position)")
         }
         
-        return abs(position.0) + abs(position.1)
+        return position
     }
     
 }
 
-private func +=(lhs: inout (Int, Int), rhs: (Int, Int)) {
-    lhs.0 += rhs.0
-    lhs.1 += rhs.1
+private func +=(lhs: inout Point, rhs: Point) {
+    lhs.north += rhs.north
+    lhs.east += rhs.east
 }
 
-private func *(lhs: (Int, Int), rhs: Int) -> (Int, Int) {
-    return (lhs.0 * rhs, lhs.1 * rhs)
-}
-
-func rotate(vector: (Int, Int), by angle: Int) -> (Int, Int) {
-    let normalizedAngle = (angle > 0) ? angle : (360 + angle)
-    switch normalizedAngle {
-    case 90:
-        return (-vector.1, vector.0)
-    case 180:
-        return (-vector.0, -vector.1)
-    case 270:
-        return (vector.1, -vector.0)
-    default:
-        fatalError()
-    }
+private func *(lhs: Point, rhs: Int) -> Point {
+    return Point(lhs.north * rhs, lhs.east * rhs)
 }
