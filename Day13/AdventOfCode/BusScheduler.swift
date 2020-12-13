@@ -1,5 +1,5 @@
 //
-//  Solver.swift
+//  BusScheduler.swift
 //  AdventOfCode
 //
 //  Created by Allan Shortlidge on 12/5/20.
@@ -7,27 +7,26 @@
 
 import Foundation
 
-public struct Solver {
+public struct BusScheduler {
     let earliestTime: Int
-    let busIDs: [Int?]
     let busIDsByIndex: [Int: Int]
     
     public init(input: String) {
         let lines = input.components(separatedBy: .newlines)
         self.earliestTime = Int(lines.first!)!
-        self.busIDs = lines.last!.components(separatedBy: ",").map { Int($0) }
+        
+        let busIDs = lines.last!.components(separatedBy: ",").map { Int($0) }
         self.busIDsByIndex = busIDs.enumerated().reduce(into: [Int: Int]()) {
             guard let busID = $1.1 else { return }
             $0[$1.0] = busID
         }
     }
     
-    public func answerPart1() -> Int {
+    public func earliestBusIDTimesDelay() -> Int {
         var minDelay = Int.max
         var minBusID = Int.max
-        for busID in busIDs.compactMap({ $0 }) {
-            let count = earliestTime / busID
-            let delay = busID * (count + 1) - earliestTime
+        for busID in busIDsByIndex.values {
+            let delay = busID * (earliestTime / busID + 1) - earliestTime
             if delay < minDelay {
                 minDelay = delay
                 minBusID = busID
@@ -37,8 +36,8 @@ public struct Solver {
         return minBusID * minDelay
     }
     
-    public func answerPart2() -> Int {
-        var timestamp = busIDs.first!!
+    public func earliestSynchronizedDeparture() -> Int {
+        var timestamp = busIDsByIndex[0]!
         
         repeat {
             let matched = matchedBusIDs(for: timestamp)
