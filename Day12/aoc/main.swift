@@ -8,8 +8,8 @@
 import AdventOfCode
 import Foundation
 
-//var solver1 = Solver(input: input, waypoint: (0, 1))
-//print("\(solver1.answer())")
+var navigator1 = Navigator(input: input, style: .part1, waypoint: (0, 1))
+print("\(navigator1.answer())")
 
-var solver2 = Solver(input: input, waypoint: (1, 10))
-print("\(solver2.answer())")
+var navigator2 = Navigator(input: input, style: .part2, waypoint: (1, 10))
+print("\(navigator2.answer())")
