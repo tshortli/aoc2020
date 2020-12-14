@@ -8,7 +8,7 @@
 import AdventOfCode
 import Foundation
 
-let solver = Solver(input: input)
+var solver = Solver(input: input)
 
 let answer = solver.answer()
 print("\(answer)")
