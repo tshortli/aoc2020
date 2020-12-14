@@ -19,8 +19,33 @@ class SolverTests: XCTestCase {
         mem[8] = 0
         """
         
-        var solver = Solver(input: input)
-        XCTAssertEqual(solver.answer(), 165)
+        let solver = Solver(input: input)
+        XCTAssertEqual(solver.answerPart1(), 165)
     }
 
+    func testPart2() throws {
+        let input =
+        """
+        mask = 000000000000000000000000000000X1001X
+        mem[42] = 100
+        mask = 00000000000000000000000000000000X0XX
+        mem[26] = 1
+        """
+        
+        let solver = Solver(input: input)
+        XCTAssertEqual(solver.answerPart2(), 208)
+    }
+    
+    func testEnumerateAddresses() throws {
+        let mask = Solver.Mask(string: "000000000000000000000000000000X1001X")
+        XCTAssertEqual(Set(addresses(from: mask, for: 42)), Set([26, 27, 58, 59]))
+    }
+    
+    func addresses(from mask: Solver.Mask, for address: Int64) -> [Int64] {
+        var addresses: [Int64] = []
+        mask.enumerateAddresses(for: address) {
+            addresses.append($0)
+        }
+        return addresses
+    }
 }

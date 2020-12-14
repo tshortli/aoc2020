@@ -9,27 +9,67 @@ import Foundation
 
 public struct Solver {
     
+    public struct Mask {
+        public let ones: Int64
+        public let zeros: Int64
+        public let floating: [Int]
+        
+        public init(string: String) {
+            var ones: Int64 = 0, zeros: Int64 = 0
+            var floating: [Int] = []
+            for (i, char) in string.reversed().enumerated() {
+                switch char {
+                case "1": ones |= 1 << i
+                case "0": zeros |= 1 << i
+                case "X": floating.append(i)
+                default:
+                    fatalError()
+                }
+            }
+            self.ones = ones
+            self.zeros = zeros
+            self.floating = floating
+        }
+        
+        public func apply(to value: Int64) -> Int64 {
+            return (value | ones) & ~zeros
+        }
+        
+        public func enumerateAddresses(for address: Int64, handler: (Int64) -> Void) {
+            Self.enumerateMasks(with: floating, ones: ones, zeros: 0) { ones, zeros in
+                handler((address | ones) & ~zeros)
+            }
+        }
+        
+        static func enumerateMasks(
+            with floatingBits: [Int],
+            ones: Int64,
+            zeros: Int64,
+            handler: (Int64, Int64) -> Void
+        ) {
+            guard let bit = floatingBits.first else {
+                handler(ones, zeros) // Base case
+                return
+            }
+            
+            let remainingBits = Array(floatingBits.dropFirst())
+            enumerateMasks(with: remainingBits, ones: ones, zeros: (zeros | 1 << bit), handler: handler)
+            enumerateMasks(with: remainingBits, ones: (ones | 1 << bit), zeros: zeros, handler: handler)
+        }
+    }
+    
     enum Instruction {
-        case mask(ones: Int64, zeros: Int64)
+        case mask(_: Mask)
         case mem(addr: Int64, value: Int64)
     }
     
     let instructions: [Instruction]
-    var memory: [Int64: Int64]
 
     public init(input: String) {
         self.instructions = input.components(separatedBy: .newlines).map { line in
             let components = line.components(separatedBy: " = ")
             if components[0] == "mask" {
-                var ones: Int64 = 0, zeros: Int64 = 0
-                for (i, char) in components[1].reversed().enumerated() {
-                    if char == "1" {
-                        ones |= 1 << i
-                    } else if char == "0" {
-                        zeros |= 1 << i
-                    }
-                }
-                return .mask(ones: ones, zeros: zeros)
+                return .mask(Mask(string: components[1]))
             } else if components[0].prefix(4) == "mem[" {
                 let scanner = Scanner(string: components[0])
                 _ = scanner.scanString("mem[")
@@ -37,22 +77,40 @@ public struct Solver {
             }
             fatalError()
         }
-        
-        self.memory = [:]
     }
     
-    mutating public func answer() -> Int64 {
-        var ones: Int64 = 0
-        var zeros: Int64 = 0
+    public func answerPart1() -> Int64 {
+        var memory: [Int64: Int64] = [:]
+        var mask = Mask(string: "")
+        
         instructions.forEach { instruction in
             switch instruction {
-            case let .mask(maskOnes, maskZeros):
-                ones = maskOnes
-                zeros = maskZeros
+            case let .mask(instrMask):
+                mask = instrMask
             case let .mem(addr, value):
-                memory[addr] = (value | ones) & ~zeros
+                memory[addr] = mask.apply(to: value)
             }
 
+        }
+        
+        return memory.values.reduce(0) {
+            return $0 + $1
+        }
+    }
+    
+    public func answerPart2() -> Int64 {
+        var memory: [Int64: Int64] = [:]
+        var mask = Mask(string: "")
+
+        instructions.forEach { instruction in
+            switch instruction {
+            case let .mask(instrMask):
+                mask = instrMask
+            case let .mem(addr, value):
+                mask.enumerateAddresses(for: addr) {
+                    memory[$0] = value
+                }
+            }
         }
         
         return memory.values.reduce(0) {
