@@ -1,5 +1,5 @@
 //
-//  Solver.swift
+//  MemoryLoader.swift
 //  AdventOfCode
 //
 //  Created by Allan Shortlidge on 12/5/20.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Solver {
+public struct MemoryLoader {
     
     public struct Mask {
         public let ones: Int64
@@ -79,7 +79,7 @@ public struct Solver {
         }
     }
     
-    public func answerPart1() -> Int64 {
+    public func memorySumWithValueMasking() -> Int64 {
         var memory: [Int64: Int64] = [:]
         var mask = Mask(string: "")
         
@@ -93,12 +93,10 @@ public struct Solver {
 
         }
         
-        return memory.values.reduce(0) {
-            return $0 + $1
-        }
+        return memory.values.reduce(0) { $0 + $1 }
     }
     
-    public func answerPart2() -> Int64 {
+    public func memorySumWithAddressMasking() -> Int64 {
         var memory: [Int64: Int64] = [:]
         var mask = Mask(string: "")
 
@@ -113,9 +111,7 @@ public struct Solver {
             }
         }
         
-        return memory.values.reduce(0) {
-            return $0 + $1
-        }
+        return memory.values.reduce(0) { $0 + $1 }
     }
     
 }

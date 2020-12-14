@@ -8,6 +8,6 @@
 import AdventOfCode
 import Foundation
 
-let solver = Solver(input: input)
-print("\(solver.answerPart1())")
-print("\(solver.answerPart2())")
+let loader = MemoryLoader(input: input)
+print("\(loader.memorySumWithValueMasking())")
+print("\(loader.memorySumWithAddressMasking())")

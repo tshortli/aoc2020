@@ -1,5 +1,5 @@
 //
-//  SolverTests.swift
+//  MemoryLoaderTests.swift
 //  AdventOfCodeTests
 //
 //  Created by Allan Shortlidge on 12/5/20.
@@ -8,9 +8,9 @@
 import AdventOfCode
 import XCTest
 
-class SolverTests: XCTestCase {
+class MemoryLoaderTests: XCTestCase {
 
-    func testExample() throws {
+    func testMemorySumWithValueMasking() throws {
         let input =
         """
         mask = XXXXXXXXXXXXXXXXXXXXXXXXXXXXX1XXXX0X
@@ -19,11 +19,11 @@ class SolverTests: XCTestCase {
         mem[8] = 0
         """
         
-        let solver = Solver(input: input)
-        XCTAssertEqual(solver.answerPart1(), 165)
+        let loader = MemoryLoader(input: input)
+        XCTAssertEqual(loader.memorySumWithValueMasking(), 165)
     }
 
-    func testPart2() throws {
+    func testMemorySumWithAddressMasking() throws {
         let input =
         """
         mask = 000000000000000000000000000000X1001X
@@ -32,16 +32,16 @@ class SolverTests: XCTestCase {
         mem[26] = 1
         """
         
-        let solver = Solver(input: input)
-        XCTAssertEqual(solver.answerPart2(), 208)
+        let loader = MemoryLoader(input: input)
+        XCTAssertEqual(loader.memorySumWithAddressMasking(), 208)
     }
     
-    func testEnumerateAddresses() throws {
-        let mask = Solver.Mask(string: "000000000000000000000000000000X1001X")
+    func testMaskEnumerateAddresses() throws {
+        let mask = MemoryLoader.Mask(string: "000000000000000000000000000000X1001X")
         XCTAssertEqual(Set(addresses(from: mask, for: 42)), Set([26, 27, 58, 59]))
     }
     
-    func addresses(from mask: Solver.Mask, for address: Int64) -> [Int64] {
+    func addresses(from mask: MemoryLoader.Mask, for address: Int64) -> [Int64] {
         var addresses: [Int64] = []
         mask.enumerateAddresses(for: address) {
             addresses.append($0)
