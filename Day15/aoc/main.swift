@@ -8,7 +8,7 @@
 import AdventOfCode
 import Foundation
 
-let solver = Solver(input: input)
+let speaker = NumberSpeaker(input: input)
 
-let answer = solver.answer(index: 2020)
-print("\(answer)")
+print("\(speaker.numberSpoken(on: 2020))")
+print("\(speaker.numberSpoken(on: 30_000_000))")

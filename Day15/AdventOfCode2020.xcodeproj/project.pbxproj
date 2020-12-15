@@ -12,7 +12,7 @@
 		9D0DF234257442CB007D498C /* libAdventOfCode.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D0DF212257441E2007D498C /* libAdventOfCode.a */; };
 		9D53DC2E257CB1D1006FCC75 /* SolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D53DC2D257CB1D1006FCC75 /* SolverTests.swift */; };
 		9DA527B6257C9C5A000AF44B /* Input.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DA527B5257C9C5A000AF44B /* Input.swift */; };
-		9DA527BB257C9CC5000AF44B /* Solver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DA527BA257C9CC5000AF44B /* Solver.swift */; };
+		9DA527BB257C9CC5000AF44B /* NumberSpeaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DA527BA257C9CC5000AF44B /* NumberSpeaker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,7 +61,7 @@
 		9D0DF233257442CB007D498C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9D53DC2D257CB1D1006FCC75 /* SolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolverTests.swift; sourceTree = "<group>"; };
 		9DA527B5257C9C5A000AF44B /* Input.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Input.swift; sourceTree = "<group>"; };
-		9DA527BA257C9CC5000AF44B /* Solver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Solver.swift; sourceTree = "<group>"; };
+		9DA527BA257C9CC5000AF44B /* NumberSpeaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberSpeaker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,7 +131,7 @@
 		9D0DF213257441E2007D498C /* AdventOfCode */ = {
 			isa = PBXGroup;
 			children = (
-				9DA527BA257C9CC5000AF44B /* Solver.swift */,
+				9DA527BA257C9CC5000AF44B /* NumberSpeaker.swift */,
 			);
 			path = AdventOfCode;
 			sourceTree = "<group>";
@@ -325,7 +325,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9DA527BB257C9CC5000AF44B /* Solver.swift in Sources */,
+				9DA527BB257C9CC5000AF44B /* NumberSpeaker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
