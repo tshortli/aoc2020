@@ -10,6 +10,4 @@ import Foundation
 // swiftlint:disable superfluous_disable_command
 // swiftlint:disable file_length
 
-let input =
-"""
-"""
+let input = "2,0,1,7,4,14,18"

@@ -10,5 +10,5 @@ import Foundation
 
 let solver = Solver(input: input)
 
-let answer = solver.answer()
+let answer = solver.answer(index: 2020)
 print("\(answer)")
