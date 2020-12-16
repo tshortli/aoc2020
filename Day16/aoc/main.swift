@@ -9,6 +9,5 @@ import AdventOfCode
 import Foundation
 
 let solver = Solver(input: input)
-
-let answer = solver.ticketScanningErrorRate()
-print("\(answer)")
+print("\(solver.ticketScanningErrorRate())")
+print("\(solver.departureProduct())")

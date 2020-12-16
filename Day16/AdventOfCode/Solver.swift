@@ -31,9 +31,11 @@ public struct Solver {
         }
         
         public func validFields(for ticket: [Int]) -> [Int] {
-            return ticket.filter { field in
-                !ranges.filter { $0.contains(field) }.isEmpty
-            }
+            return ticket.filter { contains($0) }
+        }
+        
+        public func contains(_ value: Int) -> Bool {
+            return ranges.first(where: { $0.contains(value) }) != nil
         }
     }
     
@@ -77,4 +79,61 @@ public struct Solver {
         }
     }
     
+    public func validNearbyTickets() -> [[Int]] {
+        return nearbyTickets.filter { ticket in
+            return ticket.allSatisfy { value in
+                rules.first(where: { $0.contains(value) }) != nil
+            }
+        }
+    }
+    
+    public func orderedRuleLabels() -> [String] {
+        let allPossibleRuleLabels = Set(rules.map { $0.label })
+        var possibleRuleLabelsByIndex: [Set<String>] = []
+        let tickets = validNearbyTickets()
+        
+        for i in 0..<myTicket.count {
+            var possibleRuleLabels = allPossibleRuleLabels
+            
+            for ticket in tickets {
+                let possibleRules = rules.filter { $0.contains(ticket[i]) }
+                possibleRuleLabels = possibleRuleLabels.intersection(possibleRules.map { $0.label })
+            }
+            
+            possibleRuleLabelsByIndex.append(possibleRuleLabels)
+        }
+        
+        var verifiedRuleLabels = Set<String>()
+        for possibleRuleLabels in possibleRuleLabelsByIndex where possibleRuleLabels.count == 1 {
+            verifiedRuleLabels.insert(possibleRuleLabels.first!)
+        }
+        
+        while verifiedRuleLabels != allPossibleRuleLabels {
+            for i in 0..<possibleRuleLabelsByIndex.count {
+                var possibleRuleLabels = possibleRuleLabelsByIndex[i]
+                guard possibleRuleLabels.count > 1, !verifiedRuleLabels.isEmpty else {
+                    continue
+                }
+                
+                verifiedRuleLabels.forEach { possibleRuleLabels.remove($0) }
+                assert(!possibleRuleLabels.isEmpty)
+
+                if possibleRuleLabels.count == 1 {
+                    verifiedRuleLabels.insert(possibleRuleLabels.first!)
+                }
+                
+                possibleRuleLabelsByIndex[i] = possibleRuleLabels
+            }
+        }
+
+        return possibleRuleLabelsByIndex.map { $0.first! }
+    }
+    
+    public func departureProduct() -> Int {
+        var product = 1
+        for (i, label) in orderedRuleLabels().enumerated() where label.starts(with: "departure") {
+            product *= myTicket[i]
+        }
+        return product
+    }
 }
