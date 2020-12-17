@@ -13,38 +13,6 @@ public struct GameOfLife {
         let y: Int
         let z: Int
         let w: Int
-
-        init(_ x: Int, _ y: Int, _ z: Int, _ w: Int) {
-            self.x = x
-            self.y = y
-            self.z = z
-            self.w = w
-        }
-        
-        func getNeighbors() -> [Cube] {
-            return
-                Cube(x, y, z, w - 1).getNeighborsFixedW() +
-                getNeighborsFixedW() +
-                Cube(x, y, z, w + 1).getNeighborsFixedW()
-        }
-        
-        func getNeighborsFixedW() -> [Cube] {
-            return
-                Cube(x, y, z - 1, w).getNeighborsFixedZW() +
-                getNeighborsFixedZW() +
-                Cube(x, y, z + 1, w).getNeighborsFixedZW()
-        }
-        
-        func getNeighborsFixedZW() -> [Cube] {
-            return
-                Cube(x, y - 1, z, w).getNeighborsFixedYZW() +
-                getNeighborsFixedYZW() +
-                Cube(x, y + 1, z, w).getNeighborsFixedYZW()
-        }
-        
-        func getNeighborsFixedYZW() -> [Cube] {
-            return [Cube(x - 1, y, z, w), Cube(x, y, z, w), Cube(x + 1, y, z, w)]
-        }
     }
     
     let initialActiveCubes: Set<Cube>
@@ -89,10 +57,36 @@ public struct GameOfLife {
     }
     
     public func activeCubesAfterSimulationFixedW() -> Int {
-        return simulate(count: 6, neighborGenerator: { $0.getNeighborsFixedW() }).count
+        return simulate(count: 6, neighborGenerator: { $0.neighborsFixedW() }).count
     }
     
     public func activeCubesAfterSimulation() -> Int {
-        return simulate(count: 6, neighborGenerator: { $0.getNeighbors() }).count
+        return simulate(count: 6, neighborGenerator: { $0.neighbors() }).count
+    }
+    
+}
+
+extension GameOfLife.Cube {
+    init(_ x: Int, _ y: Int, _ z: Int, _ w: Int) {
+        self.x = x
+        self.y = y
+        self.z = z
+        self.w = w
+    }
+    
+    func neighbors() -> [Self] {
+        Self(x, y, z, w - 1).neighborsFixedW() + neighborsFixedW() + Self(x, y, z, w + 1).neighborsFixedW()
+    }
+    
+    func neighborsFixedW() -> [Self] {
+        Self(x, y, z - 1, w).neighborsFixedZW() + neighborsFixedZW() + Self(x, y, z + 1, w).neighborsFixedZW()
+    }
+    
+    func neighborsFixedZW() -> [Self] {
+        Self(x, y - 1, z, w).neighborsFixedYZW() + neighborsFixedYZW() + Self(x, y + 1, z, w).neighborsFixedYZW()
+    }
+    
+    func neighborsFixedYZW() -> [Self] {
+        [Self(x - 1, y, z, w), self, Self(x + 1, y, z, w)]
     }
 }
