@@ -1,5 +1,5 @@
 //
-//  SolverTests.swift
+//  GameOfLifeTests.swift
 //  AdventOfCodeTests
 //
 //  Created by Allan Shortlidge on 12/5/20.
@@ -8,7 +8,7 @@
 import AdventOfCode
 import XCTest
 
-class SolverTests: XCTestCase {
+class GameOfLifeTests: XCTestCase {
 
     func testExample() throws {
         let input =
@@ -18,9 +18,9 @@ class SolverTests: XCTestCase {
         ###
         """
         
-        let solver = Solver(input: input)
-        XCTAssertEqual(solver.activeCubesAfterSimulationFixedW(), 112)
-        XCTAssertEqual(solver.activeCubesAfterSimulation(), 848)
+        let game = GameOfLife(input: input)
+        XCTAssertEqual(game.activeCubesAfterSimulationFixedW(), 112)
+        XCTAssertEqual(game.activeCubesAfterSimulation(), 848)
     }
 
 }

@@ -8,6 +8,7 @@
 import AdventOfCode
 import Foundation
 
-let solver = Solver(input: input)
+let game = GameOfLife(input: input)
 
-print("\(solver.activeCubesAfterSimulation())")
+print("\(game.activeCubesAfterSimulationFixedW())")
+print("\(game.activeCubesAfterSimulation())")

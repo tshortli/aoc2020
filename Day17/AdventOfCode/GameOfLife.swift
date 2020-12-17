@@ -1,5 +1,5 @@
 //
-//  Solver.swift
+//  GameOfLife.swift
 //  AdventOfCode
 //
 //  Created by Allan Shortlidge on 12/5/20.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Solver {
+public struct GameOfLife {
     struct Cube: Equatable, Hashable {
         let x: Int
         let y: Int
@@ -21,7 +21,6 @@ public struct Solver {
             self.w = w
         }
         
-        /// Returns all neighboring cubes including self
         func getNeighbors() -> [Cube] {
             return
                 Cube(x, y, z, w - 1).getNeighborsFixedW() +
@@ -29,7 +28,6 @@ public struct Solver {
                 Cube(x, y, z, w + 1).getNeighborsFixedW()
         }
         
-        /// Returns all neighboring cubes on the same W plane, including self
         func getNeighborsFixedW() -> [Cube] {
             return
                 Cube(x, y, z - 1, w).getNeighborsFixedZW() +
@@ -37,7 +35,6 @@ public struct Solver {
                 Cube(x, y, z + 1, w).getNeighborsFixedZW()
         }
         
-        /// Returns all neighboring on the same ZW plane, including self
         func getNeighborsFixedZW() -> [Cube] {
             return
                 Cube(x, y - 1, z, w).getNeighborsFixedYZW() +
@@ -45,7 +42,6 @@ public struct Solver {
                 Cube(x, y + 1, z, w).getNeighborsFixedYZW()
         }
         
-        /// Returns all neighboring on the same ZW plane, including self
         func getNeighborsFixedYZW() -> [Cube] {
             return [Cube(x - 1, y, z, w), Cube(x, y, z, w), Cube(x + 1, y, z, w)]
         }
@@ -55,14 +51,11 @@ public struct Solver {
     
     public init(input: String) {
         var activeCubes: Set<Cube> = []
-        var y = 0
-        input.components(separatedBy: .newlines).forEach { line in
-            var x = 0
-            line.forEach { char in
-                if char == "#" { activeCubes.insert(Cube(x, y, 0, 0)) }
-                x += 1
+
+        for (y, line) in input.components(separatedBy: .newlines).enumerated() {
+            for (x, char) in line.enumerated() where char == "#" {
+                activeCubes.insert(Cube(x, y, 0, 0))
             }
-            y += 1
         }
         
         self.initialActiveCubes = activeCubes
@@ -72,28 +65,27 @@ public struct Solver {
         var activeCubes = initialActiveCubes
         
         for _ in 1...count {
-            var nextActiveCubes = Set<Cube>()
-            let allCubes = activeCubes.reduce(into: Set<Cube>()) { set, cube in
-                for neighbor in neighborGenerator(cube) {
-                    set.insert(neighbor)
-                }
-            }
-            
-            for cube in allCubes {
-                let activeNeighborCount = neighborGenerator(cube).filter { $0 != cube && activeCubes.contains($0) }.count
-                if activeCubes.contains(cube) {
-                    if activeNeighborCount == 2 || activeNeighborCount == 3 {
-                        nextActiveCubes.insert(cube)
-                    }
-                } else if activeNeighborCount == 3 {
-                    nextActiveCubes.insert(cube)
-                }
-            }
-            
-            activeCubes = nextActiveCubes
+            activeCubes = simulate(activeCubes: activeCubes, neighborGenerator: neighborGenerator)
         }
         
         return activeCubes
+    }
+    
+    func simulate(activeCubes: Set<Cube>, neighborGenerator: (Cube) -> [Cube]) -> Set<Cube> {
+        let allCubes = activeCubes.reduce(into: Set<Cube>()) { set, cube in
+            neighborGenerator(cube).forEach { set.insert($0) }
+        }
+        
+        return allCubes.reduce(into: Set<Cube>()) { nextActiveCubes, cube in
+            let activeCount = neighborGenerator(cube).filter { $0 != cube && activeCubes.contains($0) }.count
+            if activeCubes.contains(cube) {
+                if activeCount == 2 || activeCount == 3 {
+                    nextActiveCubes.insert(cube)
+                }
+            } else if activeCount == 3 {
+                nextActiveCubes.insert(cube)
+            }
+        }
     }
     
     public func activeCubesAfterSimulationFixedW() -> Int {
