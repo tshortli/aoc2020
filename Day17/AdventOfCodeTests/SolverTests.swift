@@ -19,7 +19,8 @@ class SolverTests: XCTestCase {
         """
         
         let solver = Solver(input: input)
-        XCTAssertEqual(solver.activeCubesAfterSimulation(), 112)
+        XCTAssertEqual(solver.activeCubesAfterSimulationFixedW(), 112)
+        XCTAssertEqual(solver.activeCubesAfterSimulation(), 848)
     }
 
 }
