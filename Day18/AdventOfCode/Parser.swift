@@ -55,17 +55,50 @@ public struct Parser {
     }
     
     func parse(_ scanner: inout Scanner) -> Expression {
+        var state = State(precedence: precedence)
+        
+        while !scanner.isAtEnd {
+            if scanner.scanString("+") != nil {
+                state.append(.addition)
+            } else if scanner.scanString("*") != nil {
+                state.append(.multiplication)
+            } else if scanner.scanString("(") != nil {
+                state.append(parse(&scanner))
+            } else if scanner.scanString(")") != nil {
+                break // End of expression
+            } else if let integer = scanner.scanInt() {
+                state.append(Expression(constant: integer))
+            } else {
+                fatalError()
+            }
+            
+            state.reduceEither()
+        }
+        
+        // Reduce the last expression
+        state.reduce(at: 0)
+        return state.expressions[0]
+    }
+    
+    struct State {
         var expressions: [Expression] = []
         var operations: [Operation] = []
+        let precedence: (Operation) -> Int
         
-        func reduce(at index: Int) {
+        mutating func append(_ operation: Operation) { operations.append(operation) }
+        mutating func append(_ expression: Expression) { expressions.append(expression) }
+        
+        mutating func reduce(at index: Int) {
+            guard operations.count > index else { return }
+            guard expressions.count > index + 1 else { return }
+
             let right = expressions.remove(at: index + 1)
             let left = expressions.remove(at: index)
             let operation = operations.remove(at: index)
             expressions.insert(Expression(left: left, right: right, operation: operation), at: index)
         }
         
-        func reduceEither() {
+        mutating func reduceEither() {
             guard operations.count > 1 else { return }
             guard expressions.count > 2 else { return }
             
@@ -75,29 +108,6 @@ public struct Parser {
                 reduce(at: 0)
             }
         }
-                
-        while !scanner.isAtEnd {
-            if scanner.scanString("+") != nil {
-                operations.append(.addition)
-            } else if scanner.scanString("*") != nil {
-                operations.append(.multiplication)
-            } else if scanner.scanString("(") != nil {
-                expressions.append(parse(&scanner))
-            } else if scanner.scanString(")") != nil {
-                break // End of expression
-            } else if let integer = scanner.scanInt() {
-                expressions.append(Expression(constant: integer))
-            } else {
-                fatalError()
-            }
-            
-            reduceEither()
-        }
-        
-        reduce(at: 0)
-        
-        assert(operations.isEmpty && expressions.count == 1)
-        return expressions[0]
     }
 
 }

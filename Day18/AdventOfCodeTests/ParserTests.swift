@@ -26,6 +26,7 @@ class ParserTests: XCTestCase {
     
     func testParserPart1() throws {
         let parser = Parser.part1PrecedenceSolver()
+        XCTAssertEqual(parser.evaluate("42"), 42)
         XCTAssertEqual(parser.evaluate("42 + 2"), 44)
         XCTAssertEqual(parser.evaluate("42 + 2 * 3"), 132)
         XCTAssertEqual(parser.evaluate("42 + (2 * 3)"), 48)
@@ -38,6 +39,7 @@ class ParserTests: XCTestCase {
     
     func testParserPart2() throws {
         let parser = Parser.part2PrecedenceSolver()
+        XCTAssertEqual(parser.evaluate("42"), 42)
         XCTAssertEqual(parser.evaluate("42 + 2"), 44)
         XCTAssertEqual(parser.evaluate("42 + 2 * 3"), 132)
         XCTAssertEqual(parser.evaluate("42 + (2 * 3)"), 48)
