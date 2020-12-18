@@ -49,14 +49,22 @@ public struct Solver {
         var expressions: [Expression] = []
         var operations: [Operation] = []
         
-        func reduce(done: Bool) {
-            guard operations.count == 1 else { return }
-            guard expressions.count == 2 else { return }
+        func reduce() {
+            guard operations.count > 1 else { return }
+            guard expressions.count > 2 else { return }
+
+            let leftPrecedence = precedence[operations[0], default: 0]
+            let rightPrecedence = precedence[operations[1], default: 0]
             
-            let left = expressions.removeFirst()
-            let right = expressions.removeFirst()
-            let operation = operations.removeFirst()
-            expressions.insert(Expression(left: left, right: right, operation: operation), at: 0)
+            if rightPrecedence > leftPrecedence {
+                let right = expressions.remove(at: 2)
+                let left = expressions.remove(at: 1)
+                expressions.insert(Expression(left: left, right: right, operation: operations.remove(at: 1)), at: 1)
+            } else {
+                let right = expressions.remove(at: 1)
+                let left = expressions.remove(at: 0)
+                expressions.insert(Expression(left: left, right: right, operation: operations.remove(at: 0)), at: 0)
+            }
         }
                 
         while !scanner.isAtEnd {
@@ -74,16 +82,13 @@ public struct Solver {
                 fatalError()
             }
             
-            reduce(done: false)
+            reduce()
         }
         
-        reduce(done: true)
+        assert(operations.count == 1)
+        assert(expressions.count == 2)
         
-        guard let result = expressions.first, expressions.count == 1 else {
-            fatalError("Invalid expression")
-        }
-        
-        return result
+        return Expression(left: expressions[0], right: expressions[1], operation: operations[0])
     }
 
 }
