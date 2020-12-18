@@ -8,5 +8,5 @@
 import AdventOfCode
 import Foundation
 
-print("\(Solver.part1PrecedenceSolver().answer(input: input))")
-print("\(Solver.part2PrecedenceSolver().answer(input: input))")
+print("\(Parser.part1PrecedenceSolver().sumEvaluations(input: input))")
+print("\(Parser.part2PrecedenceSolver().sumEvaluations(input: input))")

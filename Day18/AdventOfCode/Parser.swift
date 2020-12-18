@@ -1,5 +1,5 @@
 //
-//  Solver.swift
+//  Parser.swift
 //  AdventOfCode
 //
 //  Created by Allan Shortlidge on 12/5/20.
@@ -19,51 +19,60 @@ public enum Operation: Character {
     }
 }
 
-public struct Solver {
-    let precedence: [Operation: Int]
+public struct Parser {
+    let precedence: (Operation) -> Int
 
-    init(precedence: [Operation: Int]) {
+    init(precedence: @escaping (Operation) -> Int) {
         self.precedence = precedence
     }
     
-    public static func part1PrecedenceSolver() -> Solver {
-        return Solver(precedence: [.addition: 1, .multiplication: 1])
+    public static func part1PrecedenceSolver() -> Parser {
+        Parser(precedence: { _ in 1 })
     }
     
-    public static func part2PrecedenceSolver() -> Solver {
-        return Solver(precedence: [.addition: 2, .multiplication: 1])
+    public static func part2PrecedenceSolver() -> Parser {
+        Parser(precedence: {
+            switch $0 {
+            case .addition: return 2
+            case .multiplication: return 1
+            }
+        })
     }
     
-    public func answer(input: String) -> Int {
+    public func sumEvaluations(input: String) -> Int {
         input.components(separatedBy: .newlines).reduce(0) {
             $0 + parse($1).evaluate()
         }
     }
     
-    public func parse(_ string: String) -> Expression {
-        var scanner = Scanner(string: string)
-        return _parse(&scanner)
+    public func evaluate(_ string: String) -> Int {
+        parse(string).evaluate()
     }
     
-    func _parse(_ scanner: inout Scanner) -> Expression {
+    public func parse(_ string: String) -> Expression {
+        var scanner = Scanner(string: string)
+        return parse(&scanner)
+    }
+    
+    func parse(_ scanner: inout Scanner) -> Expression {
         var expressions: [Expression] = []
         var operations: [Operation] = []
         
-        func reduce() {
+        func reduce(at index: Int) {
+            let right = expressions.remove(at: index + 1)
+            let left = expressions.remove(at: index)
+            let operation = operations.remove(at: index)
+            expressions.insert(Expression(left: left, right: right, operation: operation), at: index)
+        }
+        
+        func reduceEither() {
             guard operations.count > 1 else { return }
             guard expressions.count > 2 else { return }
-
-            let leftPrecedence = precedence[operations[0], default: 0]
-            let rightPrecedence = precedence[operations[1], default: 0]
             
-            if rightPrecedence > leftPrecedence {
-                let right = expressions.remove(at: 2)
-                let left = expressions.remove(at: 1)
-                expressions.insert(Expression(left: left, right: right, operation: operations.remove(at: 1)), at: 1)
+            if precedence(operations[0]) < precedence(operations[1]) {
+                reduce(at: 1)
             } else {
-                let right = expressions.remove(at: 1)
-                let left = expressions.remove(at: 0)
-                expressions.insert(Expression(left: left, right: right, operation: operations.remove(at: 0)), at: 0)
+                reduce(at: 0)
             }
         }
                 
@@ -73,7 +82,7 @@ public struct Solver {
             } else if scanner.scanString("*") != nil {
                 operations.append(.multiplication)
             } else if scanner.scanString("(") != nil {
-                expressions.append(_parse(&scanner))
+                expressions.append(parse(&scanner))
             } else if scanner.scanString(")") != nil {
                 break // End of expression
             } else if let integer = scanner.scanInt() {
@@ -82,13 +91,13 @@ public struct Solver {
                 fatalError()
             }
             
-            reduce()
+            reduceEither()
         }
         
-        assert(operations.count == 1)
-        assert(expressions.count == 2)
+        reduce(at: 0)
         
-        return Expression(left: expressions[0], right: expressions[1], operation: operations[0])
+        assert(operations.isEmpty && expressions.count == 1)
+        return expressions[0]
     }
 
 }
