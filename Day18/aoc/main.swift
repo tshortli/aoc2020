@@ -8,5 +8,5 @@
 import AdventOfCode
 import Foundation
 
-let solver = Solver(input: input)
-print("\(solver.answer())")
+print("\(Solver.part1PrecedenceSolver().answer(input: input))")
+print("\(Solver.part2PrecedenceSolver().answer(input: input))")

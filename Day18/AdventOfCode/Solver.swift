@@ -7,70 +7,63 @@
 
 import Foundation
 
-public struct Solver {
-    let lines: [String]
+public enum Operation: Character {
+    case addition = "+"
+    case multiplication = "*"
     
-    public init(input: String) {
-        self.lines = input.components(separatedBy: .newlines)
-    }
-    
-    public func answer() -> Int {
-        lines.reduce(0) {
-            $0 + Expression.parse($1).evaluate()
+    var function: (Int, Int) -> Int {
+        switch self {
+        case .addition: return (+)
+        case .multiplication: return (*)
         }
     }
-    
 }
 
-public class Expression {
-    
-    enum Kind {
-        case constant(value: Int)
-        case binary(left: Expression, right: Expression, operation: (Int, Int) -> Int)
+public struct Solver {
+    let precedence: [Operation: Int]
+
+    init(precedence: [Operation: Int]) {
+        self.precedence = precedence
     }
     
-    let kind: Kind
-    
-    public init(constant: Int) {
-        self.kind = .constant(value: constant)
+    public static func part1PrecedenceSolver() -> Solver {
+        return Solver(precedence: [.addition: 1, .multiplication: 1])
     }
     
-    public init(left: Expression, right: Expression, operation: @escaping (Int, Int) -> Int) {
-        self.kind = .binary(left: left, right: right, operation: operation)
+    public static func part2PrecedenceSolver() -> Solver {
+        return Solver(precedence: [.addition: 2, .multiplication: 1])
     }
     
-    public func evaluate() -> Int {
-        switch kind {
-        case let .constant(value):
-            return value
-        case let .binary(left, right, operation):
-            return operation(left.evaluate(), right.evaluate())
+    public func answer(input: String) -> Int {
+        input.components(separatedBy: .newlines).reduce(0) {
+            $0 + parse($1).evaluate()
         }
     }
     
-    public static func parse(_ string: String) -> Expression {
+    public func parse(_ string: String) -> Expression {
         var scanner = Scanner(string: string)
         return _parse(&scanner)
     }
     
-    static func _parse(_ scanner: inout Scanner) -> Expression {
+    func _parse(_ scanner: inout Scanner) -> Expression {
         var expressions: [Expression] = []
-        var operation: ((Int, Int) -> Int)? = nil
+        var operations: [Operation] = []
         
-        func reduce() {
-            guard expressions.count > 1 else { return }
-            guard let operation = operation else { fatalError("Missing operator") }
+        func reduce(done: Bool) {
+            guard operations.count == 1 else { return }
+            guard expressions.count == 2 else { return }
             
             let left = expressions.removeFirst()
             let right = expressions.removeFirst()
+            let operation = operations.removeFirst()
             expressions.insert(Expression(left: left, right: right, operation: operation), at: 0)
         }
                 
         while !scanner.isAtEnd {
             if scanner.scanString("+") != nil {
-                operation = (+)
+                operations.append(.addition)
             } else if scanner.scanString("*") != nil {
-                operation = (*)
+                operations.append(.multiplication)
             } else if scanner.scanString("(") != nil {
                 expressions.append(_parse(&scanner))
             } else if scanner.scanString(")") != nil {
@@ -81,16 +74,44 @@ public class Expression {
                 fatalError()
             }
             
-            reduce()
+            reduce(done: false)
         }
         
-        reduce()
+        reduce(done: true)
         
         guard let result = expressions.first, expressions.count == 1 else {
             fatalError("Invalid expression")
         }
         
         return result
+    }
+
+}
+
+public class Expression {
+
+    enum Kind {
+        case constant(value: Int)
+        case binary(left: Expression, right: Expression, operation: Operation)
+    }
+    
+    let kind: Kind
+    
+    public init(constant: Int) {
+        self.kind = .constant(value: constant)
+    }
+    
+    public init(left: Expression, right: Expression, operation: Operation) {
+        self.kind = .binary(left: left, right: right, operation: operation)
+    }
+    
+    public func evaluate() -> Int {
+        switch kind {
+        case let .constant(value):
+            return value
+        case let .binary(left, right, operation):
+            return operation.function(left.evaluate(), right.evaluate())
+        }
     }
     
 }
