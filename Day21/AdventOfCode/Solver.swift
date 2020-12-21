@@ -34,12 +34,9 @@ public struct Solver {
         
         var ingredientByAllergen = [String: String]()
         while ingredientByAllergen.count != possibleIngredientsByAllergen.count {
-            for (allergen, possibleIngredients) in possibleIngredientsByAllergen {
-                // Skip allergens with ingredients already identified
-                guard ingredientByAllergen[allergen] == nil else { continue }
-                
+            for (allergen, ingredients) in possibleIngredientsByAllergen where ingredientByAllergen[allergen] == nil {
                 // Remove ingredients that have already been identified
-                let reducedIngredients = possibleIngredients.subtracting(ingredientByAllergen.values)
+                let reducedIngredients = ingredients.subtracting(ingredientByAllergen.values)
                 if reducedIngredients.count == 1 {
                     ingredientByAllergen[allergen] = reducedIngredients.first
                 }
@@ -59,6 +56,10 @@ public struct Solver {
             total += count
         }
         return total
+    }
+    
+    public func answerPart2() -> String {
+        ingredientByAllergen.keys.sorted().compactMap { ingredientByAllergen[$0] }.joined(separator: ",")
     }
     
 }

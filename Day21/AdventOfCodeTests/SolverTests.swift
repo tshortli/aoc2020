@@ -22,6 +22,7 @@ class SolverTests: XCTestCase {
         let solver = Solver(input: input)
         XCTAssertEqual(solver.ingredientByAllergen, ["dairy": "mxmxvkd", "fish": "sqjhc", "soy": "fvjkl"])
         XCTAssertEqual(solver.answerPart1(), 5)
+        XCTAssertEqual(solver.answerPart2(), "mxmxvkd,sqjhc,fvjkl")
     }
 
 }

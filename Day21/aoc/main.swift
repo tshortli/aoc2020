@@ -10,3 +10,4 @@ import Foundation
 
 let solver = Solver(input: input)
 print("\(solver.answerPart1())")
+print("\(solver.answerPart2())")
