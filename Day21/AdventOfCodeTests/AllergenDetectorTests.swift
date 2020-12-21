@@ -1,5 +1,5 @@
 //
-//  SolverTests.swift
+//  AllergenDetectorTests.swift
 //  AdventOfCodeTests
 //
 //  Created by Allan Shortlidge on 12/5/20.
@@ -8,7 +8,7 @@
 import AdventOfCode
 import XCTest
 
-class SolverTests: XCTestCase {
+class AllergenDetectorTests: XCTestCase {
 
     func testExample() throws {
         let input =
@@ -19,10 +19,10 @@ class SolverTests: XCTestCase {
         sqjhc mxmxvkd sbzzf (contains fish)
         """
         
-        let solver = Solver(input: input)
-        XCTAssertEqual(solver.ingredientByAllergen, ["dairy": "mxmxvkd", "fish": "sqjhc", "soy": "fvjkl"])
-        XCTAssertEqual(solver.answerPart1(), 5)
-        XCTAssertEqual(solver.answerPart2(), "mxmxvkd,sqjhc,fvjkl")
+        let detector = AllergenDetector(input: input)
+        XCTAssertEqual(detector.ingredientByAllergen, ["dairy": "mxmxvkd", "fish": "sqjhc", "soy": "fvjkl"])
+        XCTAssertEqual(detector.countSafeIngredients(), 5)
+        XCTAssertEqual(detector.canonicalDangerousIngredients(), "mxmxvkd,sqjhc,fvjkl")
     }
 
 }
