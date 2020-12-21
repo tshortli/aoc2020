@@ -9,6 +9,4 @@ import AdventOfCode
 import Foundation
 
 let solver = Solver(input: input)
-
-let answer = solver.answer()
-print("\(answer)")
+print("\(solver.answerPart1())")
