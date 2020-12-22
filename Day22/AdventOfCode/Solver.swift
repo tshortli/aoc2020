@@ -8,9 +8,16 @@
 import Foundation
 
 public struct Solver {
-    struct Deck {
+    struct Deck: Equatable, Hashable {
         var cards: [Int]
         
+        mutating func playCard() -> Int { cards.removeFirst() }
+        
+        func makeCopy(count: Int) -> Deck {
+            return Deck(cards: Array(cards.prefix(count)))
+        }
+        
+        var count: Int { cards.count }
         var isEmpty: Bool { cards.isEmpty }
         var score: Int {
             var score = 0
@@ -19,6 +26,11 @@ public struct Solver {
             }
             return score
         }
+    }
+    
+    struct RoundSnapshot: Equatable, Hashable {
+        let deck1: Deck
+        let deck2: Deck
     }
     
     let deck1: Deck
@@ -34,23 +46,56 @@ public struct Solver {
     }
     
     public func playCombat() -> Int {
-        var deck1 = self.deck1
-        var deck2 = self.deck2
+        var deck1 = self.deck1, deck2 = self.deck2
         
         while !deck1.isEmpty, !deck2.isEmpty {
-            let card1 = deck1.cards.removeFirst()
-            let card2 = deck2.cards.removeFirst()
+            let card1 = deck1.playCard(), card2 = deck2.playCard()
             
             if card1 > card2 {
                 deck1.cards += [card1, card2]
-            } else if card1 < card2 {
-                deck2.cards += [card2, card1]
             } else {
-                fatalError("Cards shouldn't be able to match")
+                deck2.cards += [card2, card1]
             }
         }
         
         return (deck1.isEmpty ? deck2 : deck1).score
+    }
+    
+    public func playRecursiveCombat() -> Int {
+        let (score1, score2) = playRecursiveCombat(deck1: deck1, deck2: deck2)
+        return max(score1, score2)
+    }
+    
+    func playRecursiveCombat(deck1: Deck, deck2: Deck) -> (Int, Int) {
+        var previousRounds = Set<RoundSnapshot>()
+        var deck1 = deck1, deck2 = deck2
+
+        while !deck1.isEmpty, !deck2.isEmpty {
+            let roundSnapshot = RoundSnapshot(deck1: deck1, deck2: deck2)
+            if !previousRounds.insert(roundSnapshot).inserted {
+                // Loop prevention, player 1 wins.
+                return (deck1.score, 0)
+            }
+            
+            let card1 = deck1.playCard(), card2 = deck2.playCard()
+            var player1Wins: Bool
+            
+            if deck1.count >= card1, deck2.count >= card2 {
+                let (score1, score2) = playRecursiveCombat(deck1: deck1.makeCopy(count: card1),
+                                                           deck2: deck2.makeCopy(count: card2))
+                player1Wins = (score1 > score2)
+            } else {
+                player1Wins = (card1 > card2)
+            }
+
+            if player1Wins {
+                deck1.cards += [card1, card2]
+            } else {
+                deck2.cards += [card2, card1]
+            }
+        }
+        
+        return (deck1.score, deck2.score)
     }
     
 }

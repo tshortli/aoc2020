@@ -10,3 +10,4 @@ import Foundation
 
 let solver = Solver(input: input)
 print("\(solver.playCombat())")
+print("\(solver.playRecursiveCombat())")

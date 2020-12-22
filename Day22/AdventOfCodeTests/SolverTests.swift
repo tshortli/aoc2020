@@ -30,6 +30,24 @@ class SolverTests: XCTestCase {
         
         let solver = Solver(input: input)
         XCTAssertEqual(solver.playCombat(), 306)
+        XCTAssertEqual(solver.playRecursiveCombat(), 291)
+    }
+    
+    func testRecursiveLoopPrevention() throws {
+        let input =
+        """
+        Player 1:
+        43
+        19
+
+        Player 2:
+        2
+        29
+        14
+        """
+        
+        let solver = Solver(input: input)
+        XCTAssertEqual(solver.playRecursiveCombat(), 105)
     }
 
 }
