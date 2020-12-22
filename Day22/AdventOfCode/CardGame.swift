@@ -20,11 +20,7 @@ public struct CardGame {
         var count: Int { cards.count }
         var isEmpty: Bool { cards.isEmpty }
         var score: Int {
-            var score = 0
-            for (i, card) in cards.reversed().enumerated() {
-                score += (i + 1) * card
-            }
-            return score
+            cards.reversed().enumerated().reduce(0) { $0 + ($1.offset + 1) * $1.element }
         }
     }
     
