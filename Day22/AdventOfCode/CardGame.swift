@@ -1,5 +1,5 @@
 //
-//  Solver.swift
+//  CardGame.swift
 //  AdventOfCode
 //
 //  Created by Allan Shortlidge on 12/5/20.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Solver {
+public struct CardGame {
     struct Deck: Equatable, Hashable {
         var cards: [Int]
         

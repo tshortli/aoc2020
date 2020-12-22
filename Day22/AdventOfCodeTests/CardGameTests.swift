@@ -1,5 +1,5 @@
 //
-//  SolverTests.swift
+//  CardGameTests.swift
 //  AdventOfCodeTests
 //
 //  Created by Allan Shortlidge on 12/5/20.
@@ -8,7 +8,7 @@
 import AdventOfCode
 import XCTest
 
-class SolverTests: XCTestCase {
+class CardGameTests: XCTestCase {
 
     func testExample() throws {
         let input =
@@ -28,9 +28,9 @@ class SolverTests: XCTestCase {
         10
         """
         
-        let solver = Solver(input: input)
-        XCTAssertEqual(solver.playCombat(), 306)
-        XCTAssertEqual(solver.playRecursiveCombat(), 291)
+        let game = CardGame(input: input)
+        XCTAssertEqual(game.playCombat(), 306)
+        XCTAssertEqual(game.playRecursiveCombat(), 291)
     }
     
     func testRecursiveLoopPrevention() throws {
@@ -46,8 +46,8 @@ class SolverTests: XCTestCase {
         14
         """
         
-        let solver = Solver(input: input)
-        XCTAssertEqual(solver.playRecursiveCombat(), 105)
+        let game = CardGame(input: input)
+        XCTAssertEqual(game.playRecursiveCombat(), 105)
     }
 
 }
