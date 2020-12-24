@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum Operation: Character {
+enum Operation: Character {
     case addition = "+"
     case multiplication = "*"
     
@@ -27,10 +27,12 @@ public struct Parser {
     }
     
     public static func part1PrecedenceSolver() -> Parser {
+        // Equal precedence for all operators.
         Parser(precedence: { _ in 1 })
     }
     
     public static func part2PrecedenceSolver() -> Parser {
+        // Addition has a higher precedence than multiplication.
         Parser(precedence: {
             switch $0 {
             case .addition: return 2
@@ -39,6 +41,7 @@ public struct Parser {
         })
     }
     
+    /// Evaluates each expression (separated by newlines) and sums the results of evaluation.
     public func sumEvaluations(input: String) -> Int {
         input.components(separatedBy: .newlines).reduce(0) {
             $0 + parse($1).evaluate()
@@ -49,7 +52,7 @@ public struct Parser {
         parse(string).evaluate()
     }
     
-    public func parse(_ string: String) -> Expression {
+    func parse(_ string: String) -> Expression {
         var scanner = Scanner(string: string)
         return parse(&scanner)
     }
@@ -112,7 +115,7 @@ public struct Parser {
 
 }
 
-public class Expression {
+class Expression {
 
     enum Kind {
         case constant(value: Int)
