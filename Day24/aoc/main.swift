@@ -10,3 +10,4 @@ import Foundation
 
 let solver = Solver(input: input)
 print("\(solver.countBlackTiles())")
+print("\(solver.simulateArtExhibit(days: 100))")

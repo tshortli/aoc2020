@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Direction: String {
+enum Direction: String, CaseIterable {
     case east = "e"
     case southEast = "se"
     case southWest = "sw"
@@ -35,6 +35,9 @@ struct Point: Equatable, Hashable {
     let y: Int
     
     init(_ x: Int, _ y: Int) {
+        // To preserve unique representations of each possible location, x increments by 2 when traveling east or west,
+        // or by 1 when traveling east/west and north/south.
+        precondition(abs(x) % 2 == abs(y) % 2)
         self.x = x
         self.y = y
     }
@@ -55,6 +58,10 @@ struct Point: Equatable, Hashable {
         case .northEast: return Point(x + 1, y + 1)
         }
     }
+    
+    func neighbors() -> [Point] {
+        Direction.allCases.map { translated(by: $0) }
+    }
 }
 
 public struct Solver {
@@ -64,12 +71,44 @@ public struct Solver {
         self.directions = input.components(separatedBy: .newlines).map { Direction.directions(from: $0) }
     }
     
-    public func countBlackTiles() -> Int {
+    func startingBlackTiles() -> Set<Point> {
         var blackTiles = Set<Point>()
+        let origin = Point(0, 0)
         directions.forEach { directions in
-            let point = Point(0, 0).translated(by: directions)
+            let point = origin.translated(by: directions)
             if blackTiles.remove(point) == nil {
                 blackTiles.insert(point)
+            }
+        }
+        
+        return blackTiles
+    }
+    
+    public func countBlackTiles() -> Int {
+        return startingBlackTiles().count
+    }
+    
+    public func simulateArtExhibit(days: Int) -> Int {
+        var blackTiles = startingBlackTiles()
+
+        for _ in 1...days {
+            // Build a set of all black tiles and their neighbors.
+            let tiles = blackTiles.reduce(into: Set<Point>()) { result, tile in
+                result.insert(tile)
+                tile.neighbors().forEach { result.insert($0) }
+            }
+            
+            // Any black tile with zero or more than 2 black tiles immediately adjacent to it is flipped to white.
+            // Any white tile with exactly 2 black tiles immediately adjacent to it is flipped to black.
+            blackTiles = tiles.reduce(into: Set<Point>()) { result, tile in
+                let blackNeighborCount = tile.neighbors().filter { blackTiles.contains($0) }.count
+                if blackTiles.contains(tile) {
+                    if blackNeighborCount > 0, blackNeighborCount < 3 {
+                        result.insert(tile)
+                    }
+                } else if blackNeighborCount == 2 {
+                    result.insert(tile)
+                }
             }
         }
         

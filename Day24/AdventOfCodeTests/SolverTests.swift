@@ -46,6 +46,7 @@ class SolverTests: XCTestCase {
         
         let solver = Solver(input: input)
         XCTAssertEqual(solver.countBlackTiles(), 10)
+        XCTAssertEqual(solver.simulateArtExhibit(days: 100), 2208)
     }
 
 }
