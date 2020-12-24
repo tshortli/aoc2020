@@ -9,12 +9,12 @@ import Foundation
 
 public struct MemoryLoader {
     
-    public struct Mask {
-        public let ones: Int64
-        public let zeros: Int64
-        public let floating: [Int]
+    struct Mask {
+        let ones: Int64
+        let zeros: Int64
+        let floating: [Int]
         
-        public init(string: String) {
+        init(string: String) {
             var ones: Int64 = 0, zeros: Int64 = 0
             var floating: [Int] = []
             for (i, char) in string.reversed().enumerated() {
@@ -31,11 +31,11 @@ public struct MemoryLoader {
             self.floating = floating
         }
         
-        public func apply(to value: Int64) -> Int64 {
+        func apply(to value: Int64) -> Int64 {
             return (value | ones) & ~zeros
         }
         
-        public func enumerateAddresses(for address: Int64, handler: (Int64) -> Void) {
+        func enumerateAddresses(for address: Int64, handler: (Int64) -> Void) {
             Self.enumerateMasks(with: floating, ones: ones, zeros: 0) { ones, zeros in
                 handler((address | ones) & ~zeros)
             }
