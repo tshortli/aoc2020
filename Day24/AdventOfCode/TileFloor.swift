@@ -19,13 +19,12 @@ enum Direction: String, CaseIterable {
     static func directions(from string: String) -> [Direction] {
         var directions: [Direction] = []
         let scanner = Scanner(string: string)
-        while let char = scanner.scanCharacter() {
-            var string = String(char)
-            if char == "s" || char == "n" {
-                string.append(scanner.scanCharacter()!)
+        while !scanner.isAtEnd {
+            Direction.allCases.forEach {
+                if let string = scanner.scanString($0.rawValue) {
+                    directions.append(Direction(rawValue: string)!)
+                }
             }
-            
-            directions.append(Direction(rawValue: string)!)
         }
         
         return directions
@@ -49,13 +48,11 @@ struct HexagonalTile: Equatable, Hashable {
     
     /// Returns the tile that would be reached by following a series of directions, starting at this tile.
     func translated(by directions: [Direction]) -> Self {
-        directions.reduce(into: HexagonalTile(x, y)) { result, direction in
-            result = result.translated(by: direction)
-        }
+        directions.reduce(self) { $0.translated(by: $1) }
     }
     
     /// Returns the tile that would be reached by following the given direction, starting at this tile.
-    func translated(by direction: Direction) -> HexagonalTile {
+    func translated(by direction: Direction) -> Self {
         switch direction {
         case .east: return HexagonalTile(x + 2, y)
         case .southEast: return HexagonalTile(x + 1, y - 1)
@@ -73,28 +70,25 @@ struct HexagonalTile: Equatable, Hashable {
 }
 
 public struct TileFloor {
-    let directionsList: [[Direction]]
+    let startingBlackTiles: Set<HexagonalTile>
     
     public init(input: String) {
-        self.directionsList = input.components(separatedBy: .newlines).map { Direction.directions(from: $0) }
-    }
-    
-    func startingBlackTiles() -> Set<HexagonalTile> {
+        let lines = input.components(separatedBy: .newlines)
         let origin = HexagonalTile.origin
-        return directionsList.reduce(into: Set<HexagonalTile>()) { result, directions in
-            let tile = origin.translated(by: directions)
-            if result.remove(tile) == nil {
-                result.insert(tile)
+        startingBlackTiles = lines.reduce(into: Set<HexagonalTile>()) { blackTiles, line in
+            let tile = origin.translated(by: Direction.directions(from: line))
+            if blackTiles.remove(tile) == nil {
+                blackTiles.insert(tile)
             }
         }
     }
     
     public func countStartingBlackTiles() -> Int {
-        return startingBlackTiles().count
+        startingBlackTiles.count
     }
     
     public func simulateArtExhibit(days: Int) -> Int {
-        var blackTiles = startingBlackTiles()
+        var blackTiles = startingBlackTiles
 
         for _ in 1...days {
             // Build a set of all black tiles and their neighbors.
@@ -105,15 +99,9 @@ public struct TileFloor {
             
             // Any black tile with zero or more than 2 black tiles immediately adjacent to it is flipped to white.
             // Any white tile with exactly 2 black tiles immediately adjacent to it is flipped to black.
-            blackTiles = tiles.reduce(into: Set<HexagonalTile>()) { result, tile in
-                let adjacentBlackCount = tile.adjacentTiles().filter { blackTiles.contains($0) }.count
-                if blackTiles.contains(tile) {
-                    if adjacentBlackCount > 0, adjacentBlackCount < 3 {
-                        result.insert(tile)
-                    }
-                } else if adjacentBlackCount == 2 {
-                    result.insert(tile)
-                }
+            blackTiles = tiles.filter { tile in
+                let blackCount = tile.adjacentTiles().filter { blackTiles.contains($0) }.count
+                return blackTiles.contains(tile) ? (blackCount > 0 && blackCount < 3) : blackCount == 2
             }
         }
         
