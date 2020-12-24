@@ -7,30 +7,32 @@
 
 import Foundation
 
-public struct Allergen: Comparable, Equatable, Hashable, ExpressibleByStringLiteral {
-    public let name: String
+struct Allergen: Comparable, Equatable, Hashable, ExpressibleByStringLiteral {
+    let name: String
     
-    public static func < (lhs: Allergen, rhs: Allergen) -> Bool { lhs.name < rhs.name }
+    static func < (lhs: Allergen, rhs: Allergen) -> Bool { lhs.name < rhs.name }
     
-    public init(stringLiteral: String) {
+    init(stringLiteral: String) {
         self.name = stringLiteral
     }
 }
 
-public struct Ingredient: Equatable, Hashable, ExpressibleByStringLiteral {
-    public let name: String
+struct Ingredient: Equatable, Hashable, ExpressibleByStringLiteral {
+    let name: String
     
-    public init(stringLiteral: String) {
+    init(stringLiteral: String) {
         self.name = stringLiteral
     }
 }
 
 public struct AllergenDetector {
 
-    public let ingredientCounts: [Ingredient: Int]
-    public let ingredientByAllergen: [Allergen: Ingredient]
+    let ingredientCounts: [Ingredient: Int]
+    let ingredientByAllergen: [Allergen: Ingredient]
     
     public init(input: String) {
+        // Parse the input into a dictionary of allergens to possible ingredients. Count the number of occurrences of
+        // each ingredient.
         var ingredientCounts = [Ingredient: Int]()
         var possibleIngredientsByAllergen: [Allergen: Set<Ingredient>] = [:]
         
@@ -50,6 +52,8 @@ public struct AllergenDetector {
             ingredients.forEach { ingredientCounts[$0, default: 0] += 1 }
         }
         
+        // Repeatedly reduce the list of possible ingredients for each allergen by eliminating ingredients with known
+        // allergens until every allergen has one possible ingredient.
         var ingredientByAllergen = [Allergen: Ingredient]()
         while ingredientByAllergen.count != possibleIngredientsByAllergen.count {
             for (allergen, ingredients) in possibleIngredientsByAllergen where ingredientByAllergen[allergen] == nil {
