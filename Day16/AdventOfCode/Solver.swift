@@ -15,7 +15,8 @@ func makeClosedRange(from scanner: Scanner) -> ClosedRange<Int> {
 }
 
 public struct Solver {
-    public struct Rule {
+    
+    struct Rule {
         let label: String
         let ranges: [ClosedRange<Int>]
         
@@ -30,18 +31,18 @@ public struct Solver {
             self.ranges = ranges
         }
         
-        public func validFields(for ticket: [Int]) -> [Int] {
+        func validFields(for ticket: [Int]) -> [Int] {
             return ticket.filter { contains($0) }
         }
         
-        public func contains(_ value: Int) -> Bool {
+        func contains(_ value: Int) -> Bool {
             return ranges.first(where: { $0.contains(value) }) != nil
         }
     }
     
-    public let rules: [Rule]
-    public let myTicket: [Int]
-    public let nearbyTickets: [[Int]]
+    let rules: [Rule]
+    let myTicket: [Int]
+    let nearbyTickets: [[Int]]
     
     public init(input: String) {
         var rules: [Rule] = []
@@ -79,7 +80,7 @@ public struct Solver {
         }
     }
     
-    public func validNearbyTickets() -> [[Int]] {
+    func validNearbyTickets() -> [[Int]] {
         return nearbyTickets.filter { ticket in
             return ticket.allSatisfy { value in
                 rules.first(where: { $0.contains(value) }) != nil
@@ -87,7 +88,7 @@ public struct Solver {
         }
     }
     
-    public func orderedRuleLabels() -> [String] {
+    func orderedRuleLabels() -> [String] {
         let allPossibleRuleLabels = Set(rules.map { $0.label })
         var possibleRuleLabelsByIndex: [Set<String>] = []
         let tickets = validNearbyTickets()
@@ -136,4 +137,5 @@ public struct Solver {
         }
         return product
     }
+    
 }

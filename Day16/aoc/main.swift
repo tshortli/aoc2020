@@ -8,6 +8,10 @@
 import AdventOfCode
 import Foundation
 
+let startDate = Date()
+
 let solver = Solver(input: input)
 print("\(solver.ticketScanningErrorRate())")
 print("\(solver.departureProduct())")
+
+print("Finished in \(Int(Date().timeIntervalSince(startDate) * 1000)) ms")

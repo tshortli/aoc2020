@@ -5,7 +5,7 @@
 //  Created by Allan Shortlidge on 12/5/20.
 //
 
-import AdventOfCode
+@testable import AdventOfCode
 import XCTest
 
 class SolverTests: XCTestCase {
