@@ -20,14 +20,17 @@ enum Direction: String, CaseIterable {
         var directions: [Direction] = []
         let scanner = Scanner(string: string)
         while !scanner.isAtEnd {
-            Direction.allCases.forEach {
-                if let string = scanner.scanString($0.rawValue) {
-                    directions.append(Direction(rawValue: string)!)
-                }
-            }
+            guard let direction = scanner.scanDirection() else { fatalError("Invalid input \(string)") }
+            directions.append(direction)
         }
         
         return directions
+    }
+}
+
+extension Scanner {
+    func scanDirection() -> Direction? {
+        Direction.allCases.first { scanString($0.rawValue) != nil }
     }
 }
 
