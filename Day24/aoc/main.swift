@@ -8,6 +8,6 @@
 import AdventOfCode
 import Foundation
 
-let solver = Solver(input: input)
-print("\(solver.countBlackTiles())")
-print("\(solver.simulateArtExhibit(days: 100))")
+let floor = TileFloor(input: input)
+print("\(floor.countStartingBlackTiles())")
+print("\(floor.simulateArtExhibit(days: 100))")
