@@ -42,7 +42,7 @@ struct HexagonalTile: Equatable, Hashable {
     init(_ x: Int, _ y: Int) {
         // To preserve unique representations of each possible location, x increments by 2 when traveling east or west,
         // or by 1 when traveling east/west and north/south.
-        precondition(abs(x) % 2 == abs(y) % 2)
+        assert(abs(x) % 2 == abs(y) % 2)
         self.x = x
         self.y = y
     }
@@ -57,18 +57,23 @@ struct HexagonalTile: Equatable, Hashable {
     /// Returns the tile that would be reached by following the given direction, starting at this tile.
     func translated(by direction: Direction) -> Self {
         switch direction {
-        case .east: return HexagonalTile(x + 2, y)
-        case .southEast: return HexagonalTile(x + 1, y - 1)
-        case .southWest: return HexagonalTile(x - 1, y - 1)
-        case .west: return HexagonalTile(x - 2, y)
-        case .northWest: return HexagonalTile(x - 1, y + 1)
-        case .northEast: return HexagonalTile(x + 1, y + 1)
+        case .east:         return .init(x + 2, y)
+        case .southEast:    return .init(x + 1, y - 1)
+        case .southWest:    return .init(x - 1, y - 1)
+        case .west:         return .init(x - 2, y)
+        case .northWest:    return .init(x - 1, y + 1)
+        case .northEast:    return .init(x + 1, y + 1)
         }
     }
     
-    /// Returns the six neighboring tiles.
-    func adjacentTiles() -> [HexagonalTile] {
-        Direction.allCases.map { translated(by: $0) }
+    /// Enumerates the six neighboring tiles.
+    func enumerateAdjacentTiles(_ body: (Self) -> Void) {
+        Direction.allCases.forEach { body(translated(by: $0)) }
+    }
+    
+    /// Counts neighboring tiles that pass a predicate.
+    func countAdjacentTiles(where predicate: (Self) -> Bool) -> Int {
+        Direction.allCases.reduce(into: 0) { $0 += (predicate(translated(by: $1)) ? 1 : 0) }
     }
 }
 
@@ -97,13 +102,13 @@ public struct TileFloor {
             // Build a set of all black tiles and their neighbors.
             let tiles = blackTiles.reduce(into: Set<HexagonalTile>()) { result, tile in
                 result.insert(tile)
-                tile.adjacentTiles().forEach { result.insert($0) }
+                tile.enumerateAdjacentTiles { result.insert($0) }
             }
             
             // Any black tile with zero or more than 2 black tiles immediately adjacent to it is flipped to white.
             // Any white tile with exactly 2 black tiles immediately adjacent to it is flipped to black.
             blackTiles = tiles.filter { tile in
-                let blackCount = tile.adjacentTiles().filter { blackTiles.contains($0) }.count
+                let blackCount = tile.countAdjacentTiles { blackTiles.contains($0) }
                 return blackTiles.contains(tile) ? (blackCount > 0 && blackCount < 3) : blackCount == 2
             }
         }

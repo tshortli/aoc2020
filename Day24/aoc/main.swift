@@ -8,6 +8,9 @@
 import AdventOfCode
 import Foundation
 
+let startDate = Date()
 let floor = TileFloor(input: input)
 print("\(floor.countStartingBlackTiles())")
 print("\(floor.simulateArtExhibit(days: 100))")
+
+print("Finished in \(Int(Date().timeIntervalSince(startDate) * 1000)) ms")
