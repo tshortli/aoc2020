@@ -1,5 +1,5 @@
 //
-//  Solver.swift
+//  RFIDCracker.swift
 //  AdventOfCode
 //
 //  Created by Allan Shortlidge on 12/5/20.
@@ -7,7 +7,8 @@
 
 import Foundation
 
-public struct Solver {
+public struct RFIDCracker {
+    
     let publicKeys: [Int]
     
     public init(input: String) {
@@ -37,17 +38,14 @@ public struct Solver {
     /// Returns the result of transforming an initial value using the given subject number the number of times specified
     /// by loop size.
     static func transform(subjectNumber: Int, initialValue: Int = 1, loopSize: Int = 1) -> Int {
-        var value = initialValue
-        
-        for _ in 1...loopSize {
-            value = transformOnce(value, subjectNumber: subjectNumber)
+        (1...loopSize).reduce(initialValue) { value, _ in
+            transformOnce(value, subjectNumber: subjectNumber)
         }
-        
-        return value
     }
     
     /// Returns the result of transforming an initial value using the given subject number once.
     static func transformOnce(_ value: Int, subjectNumber: Int) -> Int {
         (value * subjectNumber) % 20_201_227
     }
+    
 }

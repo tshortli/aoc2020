@@ -15,7 +15,7 @@ let input =
 """
 
 let startDate = Date()
-let solver = Solver(input: input)
-print("\(solver.deriveEncryptionKey())")
+let cracker = RFIDCracker(input: input)
+print("\(cracker.deriveEncryptionKey())")
 
 print("Finished in \(Int(Date().timeIntervalSince(startDate) * 1000)) ms")
