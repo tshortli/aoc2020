@@ -9,14 +9,21 @@
 import XCTest
 
 class SolverTests: XCTestCase {
+    
+    func testTransformSubjectNumber() throws {
+        XCTAssertEqual(Solver.transform(subjectNumber: 7, loopSize: 8), 5_764_801)
+        XCTAssertEqual(Solver.transform(subjectNumber: 7, loopSize: 11), 17_807_724)
+    }
 
     func testExample() throws {
         let input =
         """
+        5764801
+        17807724
         """
         
         let solver = Solver(input: input)
-        XCTAssertEqual(solver.answer(), 42)
+        XCTAssertEqual(solver.deriveEncryptionKey(), 14_897_079)
     }
 
 }
